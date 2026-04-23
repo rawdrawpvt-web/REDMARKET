@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>REDMARKET · ZM — A platform for Zambian creatives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Instrument+Serif:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   REDMARKET × OPTIMUS — Editorial monochrome, hairline rules,
+   Instrument Serif (display · italic) + Instrument Sans + JetBrains Mono
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  /* Paper + ink */
+  --ivory:#FBFAF5; --parch:#FBFAF5; --parch2:#F4F1E8;
+  --char:#1A1814; --char2:#2A2822;
+  /* Surfaces */
+  --gw:#FFFFFF; --gw2:#F4F1E8; --gw3:#ECE8DD;
+  /* Single accent — RedMarket brand */
+  --mu:#C23A2A; --mu-lt:#D94A38; --mu-d:#F6E8E5;
+  /* Neutral stand-ins (kept for legacy classes, remapped to grayscale) */
+  --sky:#2A2822; --sky-lt:#3A3830; --sky-d:#ECE8DD;
+  --terra:#C23A2A; --sage:#5B5A50;
+  /* Text */
+  --tx:#1A1814; --tx-mid:#4A473F; --tx-dim:#6F6A5F; --tx-g:rgba(26,24,20,.40);
+  /* Borders — hairline only */
+  --gb:#DEDAD2; --gb2:#DEDAD2; --gb3:#E6E1D6;
+  /* Shadows — almost none */
+  --sh:0 1px 0 0 rgba(26,24,20,.04);
+  --sh-lg:0 12px 48px -12px rgba(26,24,20,.14);
+  --blur:blur(14px); --blur-sm:blur(8px); --blur-lg:blur(24px);
+  /* Radii — all tiny */
+  --r-xs:2px; --r-sm:4px; --r-md:4px; --r-lg:6px; --r-xl:8px; --r-f:9999px;
+  /* Motion */
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-lift:cubic-bezier(.34,1.56,.64,1);
+  --ease-reveal:cubic-bezier(.77,0,.175,1);
+  --t:400ms; --tf:220ms;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;background:var(--parch);}
+body{font-family:'Instrument Sans',system-ui,sans-serif;background:var(--parch);color:var(--tx);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;font-weight:400;font-size:15px;line-height:1.55;letter-spacing:-.005em;}
+button{font-family:inherit;cursor:pointer;border:none;outline:none;}
+input,textarea,select{font-family:inherit;outline:none;}
+a{text-decoration:none;color:inherit;}
+::selection{background:var(--char);color:var(--ivory);}
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-track{background:var(--parch);}
+::-webkit-scrollbar-thumb{background:var(--gb);border:2px solid var(--parch);border-radius:var(--r-f);}
+::-webkit-scrollbar-thumb:hover{background:var(--tx-dim);}
+
+/* Display serif — italic editorial accents */
+em,.serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;letter-spacing:-.01em;color:var(--char);}
+
+/* Mono label utility */
+.mono{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.14em;color:var(--tx-dim);}
+
+/* ─── Paper BG + noise overlay ─── */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--parch);}
+.bg::after{content:'';position:absolute;inset:0;opacity:.035;pointer-events:none;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+.blob{display:none;}
+@keyframes bd{from{transform:none;}to{transform:none;}}
+
+/* ─── BUTTONS (editorial, hairline, subtle lift) ─── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:.86rem;letter-spacing:-.005em;border-radius:var(--r-sm);padding:11px 20px;transition:transform var(--tf) var(--ease-lift),background var(--tf) var(--ease),color var(--tf) var(--ease),border-color var(--tf) var(--ease);white-space:nowrap;cursor:pointer;border:1px solid var(--char);}
+.btn:active{transform:translateY(0);}
+.bp{background:var(--char);color:var(--ivory);}
+.bp:hover{background:var(--char2);transform:translateY(-2px);}
+.bs{background:transparent;color:var(--char);border-color:var(--gb);}
+.bs:hover{background:var(--char);color:var(--ivory);border-color:var(--char);transform:translateY(-2px);}
+.bsky{background:var(--char);color:var(--ivory);border-color:var(--char);}
+.bsky:hover{background:var(--char2);transform:translateY(-2px);}
+.bg-btn{background:transparent;color:var(--tx-mid);border-color:transparent;}
+.bg-btn:hover{background:var(--gw2);color:var(--char);}
+.bsm{padding:7px 14px;font-size:.78rem;}
+.blg{padding:14px 28px;font-size:.95rem;border-radius:var(--r-md);}
+.ibt{width:36px;height:36px;padding:0;border-radius:var(--r-sm);background:transparent;border:1px solid var(--gb);color:var(--tx-mid);font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all var(--tf) var(--ease);}
+.ibt:hover{background:var(--char);color:var(--ivory);border-color:var(--char);}
+
+/* ─── INPUTS (hairline, no shadow, serene focus) ─── */
+.iw{display:flex;flex-direction:column;gap:8px;}
+.il{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:500;text-transform:uppercase;letter-spacing:.16em;color:var(--tx-dim);}
+.inp{width:100%;background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-sm);padding:11px 14px;font-size:.9rem;font-weight:400;color:var(--tx);transition:border-color var(--tf),background var(--tf);}
+.inp::placeholder{color:var(--tx-g);}
+.inp:focus{background:var(--gw);border-color:var(--char);}
+textarea.inp{resize:vertical;min-height:96px;font-family:inherit;line-height:1.55;}
+
+/* ─── BADGES (hairline outlined pill; single red reserved for brand) ─── */
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.64rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:var(--r-f);border:1px solid var(--gb);background:transparent;color:var(--tx-mid);}
+.bm{border-color:var(--mu);color:var(--mu);background:var(--mu-d);}
+.bsk{border-color:var(--char);color:var(--char);}
+.bsg{border-color:var(--gb);color:var(--tx-mid);}
+.bt{border-color:var(--mu);color:var(--mu);}
+.dot-b::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block;}
+.tag{display:inline-flex;align-items:center;font-family:'Instrument Sans',sans-serif;font-size:.78rem;font-weight:400;padding:5px 12px;border-radius:var(--r-f);background:transparent;border:1px solid var(--gb);color:var(--tx-mid);cursor:pointer;transition:all var(--tf) var(--ease);}
+.tag:hover{border-color:var(--char);color:var(--char);}
+.tag.on{background:var(--char);color:var(--ivory);border-color:var(--char);}
+
+/* ─── SHELL ─── */
+#app{position:relative;z-index:1;min-height:100vh;}
+.page{display:none;min-height:100vh;}
+.page.on{display:flex;flex-direction:column;animation:fi var(--t) var(--ease);}
+.fadein{animation:fi var(--t) var(--ease);}
+@keyframes fi{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+/* ─── TOP NAV (editorial, hairline, translucent) ─── */
+.tnav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:68px;background:color-mix(in srgb,var(--parch) 82%,transparent);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--gb);}
+.nbrand{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:1.5rem;letter-spacing:-.02em;display:flex;align-items:center;gap:10px;cursor:pointer;color:var(--char);}
+.nbrand::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--mu);margin-right:2px;}
+.ndot{width:6px;height:6px;background:var(--mu);border:none;border-radius:50%;animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+.nlinks{display:flex;align-items:center;gap:2px;}
+.nl{padding:8px 14px;border-radius:var(--r-sm);font-family:'Instrument Sans',sans-serif;font-size:.84rem;font-weight:400;letter-spacing:-.005em;color:var(--tx-mid);cursor:pointer;transition:color var(--tf) var(--ease),background var(--tf) var(--ease);display:flex;align-items:center;gap:6px;border:1px solid transparent;}
+.nl:hover{color:var(--char);}
+.nl.on{color:var(--char);font-weight:500;}
+.nl.on::after{content:'';position:absolute;margin-left:-9999px;}
+.nlinks{position:relative;}
+.nlinks .nl.on{position:relative;}
+.nlinks .nl.on::before{content:'';position:absolute;left:14px;right:14px;bottom:3px;height:1px;background:var(--char);}
+.nr{display:flex;align-items:center;gap:8px;}
+.nbell{position:relative;width:38px;height:38px;border-radius:var(--r-sm);background:transparent;border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;color:var(--tx-mid);transition:all var(--tf) var(--ease);}
+.nbell:hover{background:var(--char);color:var(--ivory);border-color:var(--char);}
+.npip{position:absolute;top:7px;right:7px;width:6px;height:6px;background:var(--mu);border-radius:50%;border:1.5px solid var(--parch);}
+.nav-av{width:38px;height:38px;border-radius:50%;background:var(--gw2);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-weight:400;font-size:1rem;letter-spacing:-.01em;color:var(--char);cursor:pointer;transition:all var(--tf) var(--ease);}
+.nav-av:hover{background:var(--char);color:var(--ivory);border-color:var(--char);}
+.mpill{display:flex;align-items:center;background:var(--gw2);border:1px solid var(--gb);border-radius:var(--r-f);padding:3px;}
+.mbtn{padding:6px 14px;border-radius:var(--r-f);font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--tx-dim);cursor:pointer;transition:all var(--tf) var(--ease);}
+.mbtn.on{background:var(--char);color:var(--ivory);}
+
+/* ─── SIDEBAR (cream strip, hairline rule) ─── */
+.layout{display:flex;flex:1;}
+.sb{width:236px;min-height:calc(100vh - 68px);padding:28px 14px;background:transparent;border-right:1px solid var(--gb);position:sticky;top:68px;height:calc(100vh - 68px);overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column;gap:2px;}
+.sb-lbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--tx-dim);padding:16px 10px 8px;font-weight:500;}
+.sb-lbl::before{content:'';display:inline-block;width:14px;height:1px;background:var(--gb);vertical-align:middle;margin-right:8px;}
+.sbi{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r-sm);font-family:'Instrument Sans',sans-serif;font-size:.86rem;font-weight:400;letter-spacing:-.005em;color:var(--tx-mid);cursor:pointer;transition:all var(--tf) var(--ease);border:1px solid transparent;position:relative;}
+.sbi:hover{background:var(--gw2);color:var(--char);}
+.sbi.on{background:var(--gw2);color:var(--char);font-weight:500;}
+.sbi.on::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:var(--mu);border-radius:var(--r-f);}
+.sbi .ic{width:20px;text-align:center;font-size:.95rem;}
+.sbadge{margin-left:auto;min-width:20px;height:18px;padding:0 6px;background:var(--char);color:var(--ivory);font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;border-radius:var(--r-f);display:flex;align-items:center;justify-content:center;}
+.sbi.on .sbadge{background:var(--mu);color:var(--ivory);}
+.mc{flex:1;padding:40px 48px;max-width:1180px;}
+
+/* ─── CARDS (white paper, hairline border, subtle lift) ─── */
+.card{background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-md);box-shadow:var(--sh);overflow:hidden;transition:transform var(--t) var(--ease-lift),border-color var(--t) var(--ease);}
+.card:hover{transform:translateY(-4px);border-color:var(--char);}
+.csm{background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-sm);overflow:hidden;transition:transform var(--t) var(--ease-lift),border-color var(--t) var(--ease);}
+.csm:hover{transform:translateY(-3px);border-color:var(--char);}
+
+/* ─── AVATAR (monochrome tonal, serif initials) ─── */
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-weight:400;position:relative;overflow:hidden;flex-shrink:0;border:1px solid var(--gb);letter-spacing:-.01em;}
+.av-m{background:var(--gw2);color:var(--char);}
+.av-sky{background:var(--gw3);color:var(--char);}
+.av-t{background:var(--mu-d);color:var(--mu);}
+.av-sg{background:var(--gw2);color:var(--char);}
+/* card-top covers stay visible — tonal cream variants */
+.cv-m{background:var(--gw2);border-bottom:1px solid var(--gb);}
+.cv-sky{background:var(--gw3);border-bottom:1px solid var(--gb);}
+.cv-t{background:var(--mu-d);border-bottom:1px solid var(--gb);}
+.cv-sg{background:var(--gw2);border-bottom:1px solid var(--gb);}
+
+/* ─── STATS (hairline tile, oversized serif numeral) ─── */
+.sc{background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-md);padding:24px 24px 22px;position:relative;overflow:hidden;transition:border-color var(--t) var(--ease);}
+.sc:hover{border-color:var(--char);}
+.sc::after{display:none;}
+.sn{font-family:'Instrument Serif',Georgia,serif;font-size:2.8rem;font-weight:400;color:var(--char);line-height:1;letter-spacing:-.03em;}
+.sl{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:500;color:var(--tx-dim);margin-top:10px;text-transform:uppercase;letter-spacing:.16em;}
+.sg{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:500;color:var(--tx-mid);margin-top:14px;padding-top:12px;border-top:1px solid var(--gb);letter-spacing:.04em;}
+.sg::before{content:'↗ ';color:var(--mu);font-weight:600;}
+
+/* ─── MODAL (paper card, hairline border, soft shadow) ─── */
+.ov{position:fixed;inset:0;z-index:1000;background:rgba(26,24,20,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity var(--t) var(--ease);}
+.ov.open{opacity:1;pointer-events:all;}
+.modal{background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-lg);box-shadow:var(--sh-lg);padding:36px;width:100%;max-width:520px;transform:translateY(16px);opacity:.8;transition:transform var(--t) var(--ease),opacity var(--t) var(--ease);max-height:90vh;overflow-y:auto;}
+.ov.open .modal{transform:translateY(0);opacity:1;}
+.mhd{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--gb);}
+.mtl{font-family:'Instrument Serif',Georgia,serif;font-size:1.65rem;font-weight:400;letter-spacing:-.02em;color:var(--char);}
+.mcl{width:32px;height:32px;border-radius:50%;background:transparent;border:1px solid var(--gb);color:var(--tx-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all var(--tf) var(--ease);}
+.mcl:hover{background:var(--char);color:var(--ivory);border-color:var(--char);}
+
+/* ─── SKELETON ─── */
+.skel{background:var(--gw2);animation:shimmer 1.6s ease-in-out infinite;border-radius:var(--r-sm);}
+@keyframes shimmer{0%,100%{opacity:.7;}50%{opacity:1;}}
+
+/* ─── STEP INDICATOR (hairline, serif numerals) ─── */
+.steps{display:flex;align-items:center;margin-bottom:32px;}
+.sdot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:.95rem;font-weight:400;border:1px solid var(--gb);background:var(--gw);color:var(--tx-dim);transition:all var(--t) var(--ease);}
+.sdot.on{background:var(--char);color:var(--ivory);border-color:var(--char);}
+.sdot.dn{background:var(--gw2);color:var(--char);border-color:var(--char);}
+.sdot.dn::before{content:'✓';font-family:'Instrument Sans',sans-serif;font-size:.8rem;font-weight:500;}
+.sdot.dn{font-size:0;}
+.sline{width:48px;height:1px;background:var(--gb);margin:0 4px;transition:background var(--t) var(--ease);}
+.sline.dn{background:var(--char);}
+
+/* ─── PROGRESS ─── */
+.pbar{width:100%;height:4px;background:var(--gw3);border:none;border-radius:var(--r-f);overflow:hidden;}
+.pfill{height:100%;background:var(--char);transition:width .6s var(--ease);}
+
+/* ─── TOAST ─── */
+.toasts{position:fixed;top:88px;right:28px;z-index:2000;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+.toast{background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-md);padding:14px 18px;min-width:280px;max-width:360px;box-shadow:var(--sh-lg);display:flex;align-items:center;gap:12px;animation:tin var(--t) var(--ease),tout .3s var(--ease) 3s forwards;pointer-events:all;}
+@keyframes tin{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+@keyframes tout{from{opacity:1;}to{opacity:0;pointer-events:none;}}
+.tmsg{font-family:'Instrument Sans',sans-serif;font-size:.88rem;font-weight:400;color:var(--char);}
+
+/* ─── SECTION HD (editorial: mono eyebrow → serif title) ─── */
+.shd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--gb);}
+.sey{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--tx-dim);margin-bottom:10px;font-weight:500;display:flex;align-items:center;gap:8px;}
+.sey::before{content:'';display:inline-block;width:20px;height:1px;background:var(--mu);}
+.stitle{font-family:'Instrument Serif',Georgia,serif;font-size:2.1rem;font-weight:400;color:var(--char);letter-spacing:-.02em;line-height:1.1;}
+
+/* ─── TYPE SELECTOR (quiet tile, editorial selected) ─── */
+.tsel{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.topt{border:1px solid var(--gb);border-radius:var(--r-md);padding:22px 18px;cursor:pointer;text-align:center;transition:all var(--t) var(--ease-lift);background:var(--gw);}
+.topt:hover{border-color:var(--char);transform:translateY(-2px);}
+.topt.on{background:var(--char);color:var(--ivory);border-color:var(--char);}
+.topt.on .td,.topt.on .tn{color:var(--ivory);}
+.topt .te{font-family:'Instrument Serif',serif;font-size:1.6rem;margin-bottom:8px;font-weight:400;font-style:italic;}
+.topt .tn{font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:.95rem;letter-spacing:-.01em;color:var(--char);}
+.topt .td{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--tx-dim);margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;}
+
+/* ─── SKILL CHIP ─── */
+.sch{padding:6px 14px;border-radius:var(--r-f);background:transparent;border:1px solid var(--gb);font-family:'Instrument Sans',sans-serif;font-size:.8rem;font-weight:400;letter-spacing:-.005em;color:var(--tx-mid);cursor:pointer;transition:all var(--tf) var(--ease);}
+.sch:hover{border-color:var(--char);color:var(--char);}
+.sch.on{background:var(--char);color:var(--ivory);border-color:var(--char);}
+
+/* ─── CREATIVE CARD (editorial portrait card) ─── */
+.ccard{background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-md);overflow:hidden;box-shadow:var(--sh);transition:transform var(--t) var(--ease-lift),border-color var(--t) var(--ease);cursor:pointer;position:relative;}
+.ccard:hover{transform:translateY(-4px);border-color:var(--char);}
+.ccard:hover .cca{opacity:1;transform:translateY(0);}
+.cc-av-w{margin-top:-32px;margin-bottom:14px;position:relative;z-index:1;}
+.cc-av{width:68px;height:68px;border-radius:50%;border:3px solid var(--gw);box-shadow:0 2px 12px rgba(26,24,20,.08);}
+.cc-avail{position:absolute;bottom:4px;right:2px;width:12px;height:12px;background:var(--char);border-radius:50%;border:2px solid var(--gw);}
+.ccn{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:1.3rem;color:var(--char);margin-bottom:4px;letter-spacing:-.02em;line-height:1.15;}
+.ccr{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--tx-dim);margin-bottom:14px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;}
+.ccsk{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.ccsk span{font-family:'Instrument Sans',sans-serif;font-size:.74rem;font-weight:400;padding:3px 10px;border-radius:var(--r-f);background:transparent;border:1px solid var(--gb);color:var(--tx-mid);}
+.ccft{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--gb);font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.04em;color:var(--tx-mid);}
+.cca{position:absolute;bottom:0;left:0;right:0;padding:14px 16px;background:color-mix(in srgb,var(--gw) 96%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--gb);display:flex;gap:8px;opacity:0;transform:translateY(8px);transition:all var(--t) var(--ease);}
+
+/* ─── PORTFOLIO ─── */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.pthumb{aspect-ratio:4/3;border-radius:var(--r-sm);overflow:hidden;background:var(--gw2);border:1px solid var(--gb);display:flex;align-items:center;justify-content:center;font-size:2.2rem;cursor:pointer;position:relative;transition:all var(--t) var(--ease);}
+.pthumb:hover{border-color:var(--char);transform:scale(1.015);}
+.ptov{position:absolute;inset:0;background:rgba(26,24,20,.55);opacity:0;transition:opacity var(--tf);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--ivory);font-family:'Instrument Serif',serif;font-style:italic;letter-spacing:-.01em;}
+.pthumb:hover .ptov{opacity:1;}
+
+/* ─── MESSAGES (editorial inbox, hairline rules) ─── */
+.mlout{display:flex;flex:1;height:calc(100vh - 68px);overflow:hidden;}
+.mcsb{width:300px;border-right:1px solid var(--gb);overflow-y:auto;flex-shrink:0;background:transparent;}
+.mci{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;transition:background var(--tf);border-bottom:1px solid var(--gb);}
+.mci:hover{background:var(--gw2);}
+.mci.on{background:var(--gw2);}
+.mci.on::before{content:'';position:absolute;margin-left:-20px;width:2px;height:36px;background:var(--char);}
+.mci{position:relative;}
+.mmain{flex:1;display:flex;flex-direction:column;overflow:hidden;background:transparent;}
+.mhdr{padding:18px 28px;border-bottom:1px solid var(--gb);display:flex;align-items:center;gap:12px;background:color-mix(in srgb,var(--parch) 88%,transparent);backdrop-filter:var(--blur-sm);-webkit-backdrop-filter:var(--blur-sm);}
+.mthread{flex:1;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:14px;background:transparent;}
+.mbw{display:flex;gap:8px;align-items:flex-end;}
+.mbw.mine{flex-direction:row-reverse;}
+.mb{max-width:62%;padding:12px 16px;border-radius:var(--r-md);font-family:'Instrument Sans',sans-serif;font-size:.92rem;line-height:1.55;font-weight:400;border:1px solid var(--gb);}
+.mb.their{background:var(--gw);color:var(--char);}
+.mb.mine{background:var(--char);color:var(--ivory);border-color:var(--char);}
+.mt{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--tx-dim);align-self:flex-end;padding-bottom:6px;font-weight:500;letter-spacing:.08em;}
+.mbar{padding:18px 28px;border-top:1px solid var(--gb);display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--parch) 88%,transparent);backdrop-filter:var(--blur-sm);-webkit-backdrop-filter:var(--blur-sm);}
+.mi{flex:1;background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-f);padding:10px 18px;font-family:'Instrument Sans',sans-serif;font-size:.9rem;color:var(--tx);font-weight:400;transition:border-color var(--tf) var(--ease);}
+.mi:focus{border-color:var(--char);}
+.msnd{width:40px;height:40px;border-radius:50%;background:var(--char);color:var(--ivory);border:1px solid var(--char);font-size:.95rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tf) var(--ease-lift);}
+.msnd:hover{transform:translateY(-2px);background:var(--char2);}
+
+/* ─── NOTIFY ─── */
+.nitem{display:flex;align-items:flex-start;gap:14px;padding:18px 20px;border-radius:var(--r-md);margin-bottom:8px;cursor:pointer;transition:all var(--tf) var(--ease-lift);background:var(--gw);border:1px solid var(--gb);}
+.nitem:hover{border-color:var(--char);transform:translateY(-2px);}
+.nitem.un{background:var(--gw);border-left:3px solid var(--mu);}
+.nic{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;border:1px solid var(--gb);background:var(--gw2);color:var(--char);}
+.nic-m{background:var(--gw2);}
+.nic-p{background:var(--mu-d);color:var(--mu);border-color:var(--mu);}
+.nic-h{background:var(--gw3);}
+.nic-a{background:var(--gw2);}
+
+/* ─── SETTINGS ─── */
+.slout{display:grid;grid-template-columns:220px 1fr;gap:40px;}
+.sni{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r-sm);font-family:'Instrument Sans',sans-serif;font-size:.88rem;font-weight:400;letter-spacing:-.005em;color:var(--tx-mid);cursor:pointer;transition:all var(--tf) var(--ease);margin-bottom:2px;border:1px solid transparent;position:relative;}
+.sni:hover{color:var(--char);background:var(--gw2);}
+.sni.on{color:var(--char);font-weight:500;background:var(--gw2);}
+.sni.on::before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:2px;background:var(--char);}
+.span{display:none;}.span.on{display:block;animation:fi var(--t) var(--ease);}
+.scard{background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-md);padding:32px;margin-bottom:20px;}
+.tgl-w{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--gb);}
+.tgl-w:last-child{border-bottom:none;}
+.tgl{position:relative;width:40px;height:22px;cursor:pointer;}
+.tgl input{opacity:0;width:0;height:0;}
+.tsl{position:absolute;inset:0;background:var(--gw3);border:1px solid var(--gb);border-radius:var(--r-f);transition:background var(--tf) var(--ease),border-color var(--tf) var(--ease);}
+.tsl::before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:var(--char);border-radius:50%;transition:transform var(--tf) var(--ease-lift),background var(--tf) var(--ease);}
+.tgl input:checked+.tsl{background:var(--char);border-color:var(--char);}
+.tgl input:checked+.tsl::before{transform:translateX(18px);background:var(--ivory);}
+.div{height:1px;background:var(--gb);margin:20px 0;}
+
+/* ─── AUTH (editorial single card) ─── */
+.auth-p{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 24px;}
+.auth-c{background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-lg);padding:48px;width:100%;max-width:460px;box-shadow:var(--sh-lg);position:relative;}
+
+/* ─── LANDING ─── */
+.lnav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:72px;background:color-mix(in srgb,var(--parch) 82%,transparent);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--gb);}
+.hsp{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;}
+.hcm{background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-lg);padding:28px;box-shadow:var(--sh-lg);}
+.hcf{background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-md);padding:14px 20px;box-shadow:var(--sh-lg);position:absolute;animation:float 4.2s ease-in-out infinite alternate;}
+.hcf.f1{bottom:24px;right:-12px;min-width:180px;background:var(--char);color:var(--ivory);border-color:var(--char);}
+.hcf.f1 div{color:var(--ivory) !important;}
+.hcf.f2{top:-8px;left:-12px;min-width:170px;background:var(--gw);animation-delay:1.5s;}
+@keyframes float{from{transform:translateY(0);}to{transform:translateY(-6px);}}
+.lsec{padding:120px 40px;max-width:1200px;margin:0 auto;}
+.ls-title{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:clamp(2.4rem,4.5vw,3.6rem);text-align:center;margin-bottom:16px;letter-spacing:-.03em;line-height:1.05;color:var(--char);}
+.ls-sub{font-family:'Instrument Sans',sans-serif;font-size:1.02rem;color:var(--tx-mid);text-align:center;margin-bottom:60px;max-width:540px;margin-left:auto;margin-right:auto;font-weight:400;line-height:1.55;letter-spacing:-.005em;}
+.cchip{display:flex;align-items:center;gap:8px;background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-f);padding:10px 18px;font-family:'Instrument Sans',sans-serif;font-size:.86rem;font-weight:400;letter-spacing:-.005em;color:var(--tx-mid);cursor:pointer;transition:all var(--tf) var(--ease-lift);}
+.cchip:hover{background:var(--char);color:var(--ivory);border-color:var(--char);transform:translateY(-2px);}
+.hiw{background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-md);padding:40px 32px;text-align:left;position:relative;transition:border-color var(--t) var(--ease);}
+.hiw:hover{border-color:var(--char);}
+.hiw:nth-child(2),.hiw:nth-child(3){background:var(--gw);}
+.lfooter{background:var(--char);color:var(--ivory);padding:80px 48px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;border-top:1px solid var(--gb);}
+
+/* ─── HERO TYPE ─── */
+.hvis{position:relative;}
+em{font-family:'Instrument Serif',Georgia,serif !important;font-style:italic !important;font-weight:400;color:var(--char) !important;letter-spacing:-.01em;}
+
+/* ─── LINE REVEAL + CHAR-IN (Optimus signatures) ─── */
+.line-reveal{clip-path:inset(0 100% 0 0);animation:line-reveal .9s var(--ease-reveal) forwards;}
+@keyframes line-reveal{to{clip-path:inset(0 0 0 0);}}
+.hover-lift{transition:transform .4s var(--ease-lift);}
+.hover-lift:hover{transform:translateY(-4px);}
+
+@media(max-width:900px){.sb{display:none;}.tnav{padding:0 20px;}.mc{padding:24px;}.nlinks{display:none;}.lnav{padding:0 20px;}.lsec{padding:80px 24px;}}
+@media(max-width:640px){.hsp{grid-template-columns:1fr;}.hvis{display:none;}.lsec{padding:60px 20px;}.mcsb{width:240px;}.slout{grid-template-columns:1fr;gap:20px;}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+<div class="toasts" id="TC"></div>
+
+<!-- ══ MODALS ══ -->
+<div class="ov" id="hireM">
+  <div class="modal">
+    <div class="mhd"><span class="mtl">Send Hire Request</span><button class="mcl" onclick="cm('hireM')">✕</button></div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="iw"><label class="il">Project Brief</label><textarea class="inp" placeholder="Describe what you need…" rows="3"></textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="iw"><label class="il">Budget (ZMW)</label><input class="inp" placeholder="e.g. 5,000"/></div>
+        <div class="iw"><label class="il">Timeline</label><input class="inp" placeholder="e.g. 2 weeks"/></div>
+      </div>
+      <div class="iw"><label class="il">Your Message</label><textarea class="inp" placeholder="Introduce yourself…" rows="2"></textarea></div>
+      <div style="display:flex;gap:10px;margin-top:8px;">
+        <button class="btn bg-btn" style="flex:1" onclick="cm('hireM')">Cancel</button>
+        <button class="btn bp" style="flex:2" onclick="cm('hireM');toast('🎯 Hire request sent!')">Send Request 🎯</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="collabM">
+  <div class="modal">
+    <div class="mhd"><span class="mtl">Collaboration Request</span><button class="mcl" onclick="cm('collabM')">✕</button></div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="iw"><label class="il">Project Name</label><input class="inp" placeholder="What are you working on?"/></div>
+      <div class="iw"><label class="il">Skills Needed</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
+          <span class="sch" onclick="this.classList.toggle('on')">Brand Design</span>
+          <span class="sch" onclick="this.classList.toggle('on')">Photography</span>
+          <span class="sch" onclick="this.classList.toggle('on')">Motion</span>
+          <span class="sch" onclick="this.classList.toggle('on')">Writing</span>
+          <span class="sch" onclick="this.classList.toggle('on')">Music</span>
+        </div>
+      </div>
+      <div class="iw"><label class="il">Intent</label><textarea class="inp" placeholder="Describe the collaboration opportunity…" rows="3"></textarea></div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn bg-btn" style="flex:1" onclick="cm('collabM')">Cancel</button>
+        <button class="btn bsky" style="flex:2" onclick="cm('collabM');toast('🤝 Collaboration invite sent!')">Invite 🤝</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="projM">
+  <div class="modal" style="max-width:580px;">
+    <div class="mhd"><span class="mtl">Post a Project</span><button class="mcl" onclick="cm('projM')">✕</button></div>
+    <div id="projMC"></div>
+  </div>
+</div>
+
+<div id="app">
+
+<!-- ════════════════════════
+     LANDING
+════════════════════════ -->
+<div id="p-land" class="page on fadein" style="flex-direction:column;">
+  <nav class="lnav">
+    <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.3rem;display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="sp('p-land')">
+      <div class="ndot"></div>REDMARKET<span style="color:var(--mu);">·</span>ZM
+    </div>
+    <div style="display:flex;gap:28px;">
+      <span style="font-size:.83rem;font-weight:500;color:var(--tx-mid);cursor:pointer;" onclick="sp('p-explore')">Explore</span>
+      <span style="font-size:.83rem;font-weight:500;color:var(--tx-mid);cursor:pointer;" onclick="sp('p-login')">Sign In</span>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn bg-btn bsm" onclick="sp('p-login')">Sign In</button>
+      <button class="btn bp bsm" onclick="sp('p-signup')">Get Started</button>
+    </div>
+  </nav>
+
+  <div style="padding:130px 48px 80px;max-width:1200px;margin:0 auto;width:100%;">
+    <div class="hsp">
+      <div>
+        <div style="margin-bottom:18px;">
+          <span class="badge bm dot-b">Zambia's Creative Marketplace</span>
+        </div>
+        <h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(2.8rem,5vw,4.2rem);line-height:1.05;color:var(--char);margin-bottom:18px;">
+          Where <em style="color:var(--mu);font-style:italic;">talent</em><br/>meets opportunity.
+        </h1>
+        <p style="font-size:1rem;line-height:1.75;color:var(--tx-mid);margin-bottom:32px;max-width:420px;">
+          Discover skilled Zambian creatives, hire professionals, post projects, and build remarkable work — all in one beautifully curated platform.
+        </p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;">
+          <button class="btn bp blg" onclick="sp('p-signup')">Start Exploring ✦</button>
+          <button class="btn bs blg" onclick="sp('p-signup')">Join as Creative</button>
+        </div>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;">
+          <div style="font-size:.8rem;color:var(--tx-dim);"><strong style="color:var(--char);">2,400+</strong> Creatives</div>
+          <div style="font-size:.8rem;color:var(--tx-dim);"><strong style="color:var(--char);">840+</strong> Projects Posted</div>
+          <div style="font-size:.8rem;color:var(--tx-dim);"><strong style="color:var(--char);">10</strong> Provinces</div>
+        </div>
+      </div>
+      <div class="hvis" style="position:relative;">
+        <div style="position:relative;height:380px;">
+          <div class="hcm">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+              <div class="av av-m" style="width:48px;height:48px;font-size:1.3rem;border-radius:var(--r-md);">C</div>
+              <div>
+                <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:.95rem;">Chanda Mwale</div>
+                <div style="font-size:.72rem;color:var(--tx-dim);">Visual Designer · Lusaka</div>
+              </div>
+              <span class="badge bsg dot-b" style="margin-left:auto;">Available</span>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+              <span class="tag on">Brand Identity</span><span class="tag">UI Design</span><span class="tag">Illustration</span>
+            </div>
+            <div class="pbar" style="margin-bottom:6px;"><div class="pfill" style="width:82%;"></div></div>
+            <div style="font-size:.72rem;color:var(--tx-dim);">Profile 82% complete</div>
+          </div>
+          <div class="hcf f1">
+            <div style="font-size:.7rem;color:var(--tx-dim);margin-bottom:6px;">Latest Project</div>
+            <div style="font-size:.88rem;font-weight:600;color:var(--char);">Rebrand for Zesco</div>
+            <div style="font-size:.72rem;color:var(--mu);font-weight:600;margin-top:4px;">ZMW 12,000</div>
+          </div>
+          <div class="hcf f2">
+            <div style="font-size:.7rem;color:var(--tx-dim);margin-bottom:6px;">✨ New requests</div>
+            <div style="font-size:.82rem;font-weight:600;color:var(--char);">3 hire requests today</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="lsec" style="padding-top:0;">
+    <p style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mu);font-weight:600;text-align:center;margin-bottom:14px;">Browse By Category</p>
+    <div class="ls-title">Find the right creative<br/>for every kind of work</div>
+    <p class="ls-sub">From brand designers to photographers, writers to musicians — Zambia's creative talent is here.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+      <div class="cchip" onclick="filterExplore('design');sp('p-explore')"><span>🎨</span> Design & Branding</div>
+      <div class="cchip" onclick="filterExplore('photo');sp('p-explore')"><span>📸</span> Photography</div>
+      <div class="cchip" onclick="filterExplore('video');sp('p-explore')"><span>🎬</span> Video & Film</div>
+      <div class="cchip" onclick="filterExplore('music');sp('p-explore')"><span>🎵</span> Music & Audio</div>
+      <div class="cchip" onclick="filterExplore('writing');sp('p-explore')"><span>✍️</span> Writing & Copy</div>
+      <div class="cchip" onclick="filterExplore('dev');sp('p-explore')"><span>💻</span> Dev & Tech</div>
+      <div class="cchip" onclick="filterExplore('fashion');sp('p-explore')"><span>👗</span> Fashion</div>
+      <div class="cchip" onclick="filterExplore('illustration');sp('p-explore')"><span>🖌️</span> Illustration</div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="lsec">
+    <p style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sky);font-weight:600;text-align:center;margin-bottom:14px;">How It Works</p>
+    <div class="ls-title">Simple. Direct. Trusted.</div>
+    <p class="ls-sub">Built for Zambia's creative economy — fair discovery, transparent collaboration.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+      <div class="hiw"><div style="width:44px;height:44px;border-radius:50%;background:var(--mu-d);color:#8A6300;font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">1</div><div style="font-size:2rem;margin-bottom:10px;">🔍</div><div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;margin-bottom:6px;">Explore Creatives</div><div style="font-size:.82rem;color:var(--tx-dim);line-height:1.6;">Browse verified profiles across all creative disciplines.</div></div>
+      <div class="hiw"><div style="width:44px;height:44px;border-radius:50%;background:var(--mu-d);color:#8A6300;font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">2</div><div style="font-size:2rem;margin-bottom:10px;">📋</div><div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;margin-bottom:6px;">Post a Project</div><div style="font-size:.82rem;color:var(--tx-dim);line-height:1.6;">Describe your project and let creatives come to you.</div></div>
+      <div class="hiw"><div style="width:44px;height:44px;border-radius:50%;background:var(--mu-d);color:#8A6300;font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">3</div><div style="font-size:2rem;margin-bottom:10px;">🤝</div><div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;margin-bottom:6px;">Collaborate</div><div style="font-size:.82rem;color:var(--tx-dim);line-height:1.6;">Message, hire, and collaborate — all in one place.</div></div>
+      <div class="hiw"><div style="width:44px;height:44px;border-radius:50%;background:var(--mu-d);color:#8A6300;font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">4</div><div style="font-size:2rem;margin-bottom:10px;">⭐</div><div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;margin-bottom:6px;">Build Trust</div><div style="font-size:.82rem;color:var(--tx-dim);line-height:1.6;">Reviews and project history build lasting reputation.</div></div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="lsec" style="padding-top:20px;">
+    <div style="background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-xl);padding:48px;backdrop-filter:var(--blur-sm);box-shadow:var(--sh);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;">
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.8rem;margin-bottom:8px;">Ready to get started?</div>
+        <div style="font-size:.88rem;color:var(--tx-dim);">Join thousands of Zambian creatives and clients already building together.</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <span style="display:inline-flex;align-items:center;gap:8px;background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-f);padding:10px 20px;font-size:.82rem;font-weight:500;">🇿🇲 Made for Zambia</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-f);padding:10px 20px;font-size:.82rem;font-weight:500;">✅ Verified Profiles</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-f);padding:10px 20px;font-size:.82rem;font-weight:500;">⚖️ Fair Discovery</span>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <button class="btn bp" onclick="sp('p-signup')">Create Account</button>
+        <button class="btn bg-btn" onclick="sp('p-login')">Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="lfooter">
+    <div><div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;margin-bottom:4px;">REDMARKET · ZM</div><div style="font-size:.78rem;color:rgba(245,239,228,.5);">By Rawdraw Inc. · Lusaka, Zambia</div></div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+      <span style="font-size:.78rem;color:rgba(245,239,228,.5);cursor:pointer;">About</span>
+      <span style="font-size:.78rem;color:rgba(245,239,228,.5);cursor:pointer;">Privacy</span>
+      <span style="font-size:.78rem;color:rgba(245,239,228,.5);cursor:pointer;">Terms</span>
+      <span style="font-size:.78rem;color:rgba(245,239,228,.5);cursor:pointer;">Contact</span>
+    </div>
+    <div style="font-size:.75rem;color:rgba(245,239,228,.4);">© 2024 Rawdraw Inc.</div>
+  </footer>
+</div>
+
+<!-- ════════════════════════
+     LOGIN
+════════════════════════ -->
+<div id="p-login" class="page" style="flex-direction:column;">
+  <div class="auth-p">
+    <div class="auth-c">
+      <div style="text-align:center;font-family:'Playfair Display',serif;font-weight:900;font-size:1.5rem;margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:8px;"><div class="ndot"></div>REDMARKET</div>
+      <h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.7rem;text-align:center;margin-bottom:6px;">Welcome back</h1>
+      <p style="font-size:.84rem;color:var(--tx-dim);text-align:center;margin-bottom:28px;">Sign in to your account</p>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="iw"><label class="il">Email</label><input class="inp" type="email" id="l-em" placeholder="you@example.com"/></div>
+        <div class="iw"><label class="il">Password</label><input class="inp" type="password" id="l-pw" placeholder="••••••••"/></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:.78rem;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--tx-mid);"><input type="checkbox" style="accent-color:var(--mu);"/> Remember me</label>
+          <span style="color:var(--mu);font-weight:600;cursor:pointer;" onclick="sp('p-forgot')">Forgot password?</span>
+        </div>
+        <button class="btn bp" style="width:100%;" onclick="doLogin()">Sign In</button>
+        <p style="text-align:center;font-size:.82rem;color:var(--tx-dim);">Don't have an account? <span style="color:var(--mu);font-weight:600;cursor:pointer;" onclick="sp('p-signup')">Create one</span></p>
+        <button class="btn bg-btn bsm" style="width:100%;" onclick="sp('p-land')">← Back to Home</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     SIGNUP
+════════════════════════ -->
+<div id="p-signup" class="page" style="flex-direction:column;">
+  <div class="auth-p">
+    <div class="auth-c">
+      <div style="text-align:center;font-family:'Playfair Display',serif;font-weight:900;font-size:1.5rem;margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:8px;"><div class="ndot"></div>REDMARKET</div>
+      <h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.7rem;text-align:center;margin-bottom:6px;">Create account</h1>
+      <p style="font-size:.84rem;color:var(--tx-dim);text-align:center;margin-bottom:24px;">Join Zambia's creative marketplace</p>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="tsel">
+          <div class="topt on" id="tc-client" onclick="selType('client')"><div class="te">🏢</div><div class="tn">Client</div><div class="td">Hire creatives</div></div>
+          <div class="topt" id="tc-creative" onclick="selType('creative')"><div class="te">🎨</div><div class="tn">Creative</div><div class="td">Offer services</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="iw"><label class="il">First Name</label><input class="inp" id="s-fn" placeholder="Chanda"/></div>
+          <div class="iw"><label class="il">Last Name</label><input class="inp" id="s-ln" placeholder="Mwale"/></div>
+        </div>
+        <div class="iw"><label class="il">Email</label><input class="inp" type="email" id="s-em" placeholder="you@example.com"/></div>
+        <div class="iw"><label class="il">Password</label><input class="inp" type="password" id="s-pw" placeholder="Min. 8 characters"/></div>
+        <div class="iw"><label class="il">Confirm Password</label><input class="inp" type="password" id="s-pw2" placeholder="Re-enter password"/></div>
+        <button class="btn bp" style="width:100%;" onclick="doSignup()">Create Account ✦</button>
+        <p style="text-align:center;font-size:.82rem;color:var(--tx-dim);">Already have an account? <span style="color:var(--mu);font-weight:600;cursor:pointer;" onclick="sp('p-login')">Sign in</span></p>
+        <button class="btn bg-btn bsm" style="width:100%;" onclick="sp('p-land')">← Back to Home</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     FORGOT PW
+════════════════════════ -->
+<div id="p-forgot" class="page" style="flex-direction:column;">
+  <div class="auth-p">
+    <div class="auth-c" style="max-width:400px;">
+      <div style="text-align:center;font-size:2.5rem;margin-bottom:16px;">🔑</div>
+      <h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.7rem;text-align:center;margin-bottom:6px;">Forgot Password?</h1>
+      <p style="font-size:.84rem;color:var(--tx-dim);text-align:center;margin-bottom:28px;">Enter your email to receive a reset link.</p>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="iw"><label class="il">Email</label><input class="inp" type="email" placeholder="you@example.com"/></div>
+        <button class="btn bp" style="width:100%;" onclick="toast('📧 Reset link sent! Check your inbox.')">Send Reset Link</button>
+        <p style="text-align:center;font-size:.82rem;color:var(--tx-dim);">Remembered it? <span style="color:var(--mu);font-weight:600;cursor:pointer;" onclick="sp('p-login')">Back to Sign In</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     ONBOARDING
+════════════════════════ -->
+<div id="p-onboard" class="page" style="flex-direction:column;">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 24px;">
+    <div style="background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-xl);padding:44px;width:100%;max-width:560px;box-shadow:var(--sh-lg);backdrop-filter:var(--blur);">
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;margin-bottom:4px;">Let's set up your profile</div>
+        <div style="font-size:.8rem;color:var(--tx-dim);">Takes less than 2 minutes</div>
+      </div>
+      <div class="steps" id="ob-steps"></div>
+      <div id="ob-content"></div>
+      <div style="display:flex;gap:10px;margin-top:24px;">
+        <button class="btn bg-btn" style="flex:1;" id="ob-back" onclick="obBack()">← Back</button>
+        <button class="btn bp" style="flex:2;" id="ob-next" onclick="obNext()">Continue →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     CLIENT DASHBOARD
+════════════════════════ -->
+<div id="p-client" class="page" style="flex-direction:column;">
+  <nav class="tnav">
+    <div class="nbrand" onclick="sp('p-client')"><div class="ndot"></div>REDMARKET</div>
+    <div class="nlinks">
+      <span class="nl on" onclick="sp('p-client')">🏠 Home</span>
+      <span class="nl" onclick="sp('p-explore')">🔍 Explore</span>
+      <span class="nl" onclick="sp('p-messages')">💬 Messages</span>
+      <span class="nl" onclick="sp('p-projects')">📋 Projects</span>
+    </div>
+    <div class="nr">
+      <div class="mpill"><span class="mbtn on">Client</span><span class="mbtn" onclick="sp('p-creative')">Creative</span></div>
+      <div class="nbell" onclick="sp('p-notifs')">🔔<div class="npip"></div></div>
+      <div class="nav-av" onclick="sp('p-settings')">CM</div>
+    </div>
+  </nav>
+  <div class="layout">
+    <aside class="sb">
+      <div class="sb-lbl">Main</div>
+      <div class="sbi on" onclick="sp('p-client')"><span class="ic">🏠</span>Dashboard</div>
+      <div class="sbi" onclick="sp('p-explore')"><span class="ic">🔍</span>Explore</div>
+      <div class="sbi" onclick="sp('p-messages')"><span class="ic">💬</span>Messages<span class="sbadge">3</span></div>
+      <div class="sbi" onclick="sp('p-projects')"><span class="ic">📋</span>Projects</div>
+      <div class="sbi" onclick="sp('p-saved')"><span class="ic">❤️</span>Saved</div>
+      <div class="sb-lbl">Account</div>
+      <div class="sbi" onclick="sp('p-notifs')"><span class="ic">🔔</span>Notifications<span class="sbadge">5</span></div>
+      <div class="sbi" onclick="sp('p-settings')"><span class="ic">⚙️</span>Settings</div>
+      <div class="sbi" onclick="sp('p-land')"><span class="ic">👋</span>Sign Out</div>
+    </aside>
+    <main class="mc">
+      <div style="margin-bottom:28px;">
+        <div style="font-size:.78rem;color:var(--tx-dim);margin-bottom:4px;">Good morning ☀️</div>
+        <h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.8rem;">Welcome back, Chanda.</h1>
+      </div>
+      <!-- Stats -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;">
+        <div class="sc"><div class="sn">4</div><div class="sl">Active Projects</div><div class="sg">↑ 1 this week</div></div>
+        <div class="sc"><div class="sn">12</div><div class="sl">Saved Creatives</div><div class="sg">↑ 3 new</div></div>
+        <div class="sc"><div class="sn">3</div><div class="sl">Unread Messages</div><div class="sg">Reply pending</div></div>
+        <div class="sc"><div class="sn">7</div><div class="sl">Proposals</div><div class="sg">2 awaiting review</div></div>
+      </div>
+      <!-- Search -->
+      <div style="background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-lg);padding:14px 20px;display:flex;align-items:center;gap:12px;margin-bottom:28px;backdrop-filter:var(--blur-sm);">
+        <span style="font-size:1.1rem;opacity:.5;">🔍</span>
+        <input style="flex:1;background:none;border:none;font-size:.9rem;color:var(--tx);" placeholder="Search creatives, skills, or projects…" onclick="sp('p-explore')"/>
+        <button class="btn bp bsm" onclick="sp('p-explore')">Search</button>
+      </div>
+      <!-- Quick Actions -->
+      <div style="margin-bottom:6px;"><div class="sey">Quick Actions</div></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px;">
+        <div class="csm" style="padding:16px;text-align:center;cursor:pointer;" onclick="om('projM');renderProjModal()"><div style="font-size:1.8rem;margin-bottom:8px;">📋</div><div style="font-size:.8rem;font-weight:600;">Post Project</div></div>
+        <div class="csm" style="padding:16px;text-align:center;cursor:pointer;" onclick="sp('p-explore')"><div style="font-size:1.8rem;margin-bottom:8px;">🔍</div><div style="font-size:.8rem;font-weight:600;">Find Creatives</div></div>
+        <div class="csm" style="padding:16px;text-align:center;cursor:pointer;" onclick="sp('p-messages')"><div style="font-size:1.8rem;margin-bottom:8px;">💬</div><div style="font-size:.8rem;font-weight:600;">Messages</div></div>
+        <div class="csm" style="padding:16px;text-align:center;cursor:pointer;" onclick="sp('p-saved')"><div style="font-size:1.8rem;margin-bottom:8px;">❤️</div><div style="font-size:.8rem;font-weight:600;">Saved</div></div>
+      </div>
+      <!-- Recommended -->
+      <div class="shd">
+        <div><div class="sey">For You</div><div class="stitle">Recommended Creatives</div></div>
+        <button class="btn bg-btn bsm" onclick="sp('p-explore')">View All →</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:32px;" id="dc-grid"></div>
+      <!-- Projects -->
+      <div class="shd">
+        <div><div class="sey">Activity</div><div class="stitle">Recent Projects</div></div>
+        <button class="btn bg-btn bsm" onclick="sp('p-projects')">All Projects →</button>
+      </div>
+      <div id="dp-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     CREATIVE DASHBOARD
+════════════════════════ -->
+<div id="p-creative" class="page" style="flex-direction:column;">
+  <nav class="tnav">
+    <div class="nbrand" onclick="sp('p-creative')"><div class="ndot"></div>REDMARKET</div>
+    <div class="nlinks">
+      <span class="nl on" onclick="sp('p-creative')">🏠 Home</span>
+      <span class="nl" onclick="sp('p-myprofile')">👤 Profile</span>
+      <span class="nl" onclick="sp('p-messages')">💬 Messages</span>
+      <span class="nl" onclick="sp('p-projects')">📋 Projects</span>
+    </div>
+    <div class="nr">
+      <div class="mpill"><span class="mbtn" onclick="sp('p-client')">Client</span><span class="mbtn on">Creative</span></div>
+      <div class="nbell" onclick="sp('p-notifs')">🔔<div class="npip"></div></div>
+      <div class="nav-av" onclick="sp('p-settings')">CM</div>
+    </div>
+  </nav>
+  <div class="layout">
+    <aside class="sb">
+      <div class="sb-lbl">Studio</div>
+      <div class="sbi on" onclick="sp('p-creative')"><span class="ic">🏠</span>Dashboard</div>
+      <div class="sbi" onclick="sp('p-myprofile')"><span class="ic">👤</span>My Profile</div>
+      <div class="sbi" onclick="sp('p-messages')"><span class="ic">💬</span>Messages<span class="sbadge">2</span></div>
+      <div class="sbi" onclick="sp('p-projects')"><span class="ic">📋</span>Projects</div>
+      <div class="sbi" onclick="sp('p-explore')"><span class="ic">🔍</span>Explore</div>
+      <div class="sbi" onclick="sp('p-saved')"><span class="ic">❤️</span>Saved</div>
+      <div class="sb-lbl">Account</div>
+      <div class="sbi" onclick="sp('p-notifs')"><span class="ic">🔔</span>Notifications<span class="sbadge">4</span></div>
+      <div class="sbi" onclick="sp('p-settings')"><span class="ic">⚙️</span>Settings</div>
+      <div class="sbi" onclick="sp('p-land')"><span class="ic">👋</span>Sign Out</div>
+    </aside>
+    <main class="mc">
+      <div style="margin-bottom:28px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+        <div><div style="font-size:.78rem;color:var(--tx-dim);margin-bottom:4px;">Creative Studio ✦</div><h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.8rem;">Your Creative Hub</h1></div>
+        <button class="btn bp bsm" onclick="sp('p-myprofile')">Edit Profile ✏️</button>
+      </div>
+      <!-- Profile complete -->
+      <div style="background:var(--gw);border:1px solid rgba(212,160,23,.3);border-radius:var(--r-lg);padding:22px 24px;margin-bottom:24px;backdrop-filter:var(--blur-sm);display:flex;align-items:center;gap:20px;">
+        <div style="font-size:2rem;">🎯</div>
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:.9rem;margin-bottom:6px;">Complete your profile for more visibility</div>
+          <div class="pbar"><div class="pfill" style="width:68%;"></div></div>
+          <div style="font-size:.72rem;color:var(--tx-dim);margin-top:4px;">68% — Add portfolio samples to reach 100%</div>
+        </div>
+        <button class="btn bg-btn bsm" onclick="sp('p-myprofile')">Complete →</button>
+      </div>
+      <!-- Stats -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;">
+        <div class="sc"><div class="sn">142</div><div class="sl">Profile Views</div><div class="sg">↑ 28 this week</div></div>
+        <div class="sc"><div class="sn">8</div><div class="sl">Inquiries</div><div class="sg">3 new today</div></div>
+        <div class="sc"><div class="sn">2</div><div class="sl">Active Collab</div><div class="sg">In progress</div></div>
+        <div class="sc"><div class="sn">4.9</div><div class="sl">Avg Rating</div><div class="sg">12 reviews</div></div>
+      </div>
+      <!-- Inquiries -->
+      <div class="shd">
+        <div><div class="sey">Recent</div><div class="stitle">New Inquiries</div></div>
+        <span class="badge bt">3 new</span>
+      </div>
+      <div id="cr-inquiries" style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;"></div>
+      <!-- Portfolio -->
+      <div class="shd">
+        <div><div class="sey">Your Work</div><div class="stitle">Portfolio Preview</div></div>
+        <button class="btn bg-btn bsm" onclick="sp('p-myprofile')">Manage →</button>
+      </div>
+      <div class="pgrid" style="grid-template-columns:repeat(4,1fr);" id="cr-portfolio"></div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     EXPLORE
+════════════════════════ -->
+<div id="p-explore" class="page" style="flex-direction:column;">
+  <nav class="tnav">
+    <div class="nbrand" onclick="sp('p-client')"><div class="ndot"></div>REDMARKET</div>
+    <div class="nlinks">
+      <span class="nl" onclick="sp('p-client')">🏠 Home</span>
+      <span class="nl on">🔍 Explore</span>
+      <span class="nl" onclick="sp('p-messages')">💬 Messages</span>
+    </div>
+    <div class="nr">
+      <div class="nbell" onclick="sp('p-notifs')">🔔<div class="npip"></div></div>
+      <div class="nav-av" onclick="sp('p-settings')">CM</div>
+    </div>
+  </nav>
+  <div class="layout">
+    <aside class="sb">
+      <div style="padding:4px 0 12px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tx-g);padding:4px 12px 10px;font-weight:600;">Filters</div>
+        <div style="padding:0 4px;display:flex;flex-direction:column;gap:10px;">
+          <div class="iw"><label class="il" style="font-size:.72rem;">Category</label>
+            <select class="inp" style="font-size:.78rem;padding:8px 12px;" onchange="filterExplore(this.value);renderExplore()">
+              <option value="all">All Categories</option>
+              <option value="design">Design & Branding</option>
+              <option value="photo">Photography</option>
+              <option value="video">Video & Film</option>
+              <option value="music">Music & Audio</option>
+              <option value="writing">Writing</option>
+              <option value="dev">Dev & Tech</option>
+              <option value="fashion">Fashion</option>
+              <option value="illustration">Illustration</option>
+            </select>
+          </div>
+          <div class="iw"><label class="il" style="font-size:.72rem;">Location</label>
+            <select class="inp" style="font-size:.78rem;padding:8px 12px;">
+              <option>All Zambia</option><option>Lusaka</option><option>Copperbelt</option><option>Southern</option>
+            </select>
+          </div>
+          <div class="iw"><label class="il" style="font-size:.72rem;">Availability</label>
+            <select class="inp" style="font-size:.78rem;padding:8px 12px;">
+              <option>Any</option><option>Available Now</option><option>Part-time</option>
+            </select>
+          </div>
+          <div><label class="il" style="font-size:.72rem;">Budget (ZMW/hr)</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;">
+              <input class="inp" style="font-size:.75rem;padding:8px;" placeholder="Min"/>
+              <input class="inp" style="font-size:.75rem;padding:8px;" placeholder="Max"/>
+            </div>
+          </div>
+          <button class="btn bp" style="width:100%;font-size:.75rem;padding:9px;" onclick="toast('✅ Filters applied!')">Apply</button>
+        </div>
+      </div>
+    </aside>
+    <main class="mc">
+      <div style="margin-bottom:18px;"><h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.7rem;margin-bottom:4px;">Explore Creatives</h1><div style="font-size:.85rem;color:var(--tx-dim);">Discover Zambia's talented creative professionals</div></div>
+      <div style="background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-lg);padding:12px 18px;display:flex;align-items:center;gap:12px;margin-bottom:16px;backdrop-filter:var(--blur-sm);">
+        <span style="opacity:.5;">🔍</span>
+        <input style="flex:1;background:none;border:none;font-size:.88rem;color:var(--tx);" placeholder="Search by name, skill, location…" id="ex-search" oninput="renderExplore()"/>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;" id="ex-cats">
+        <span class="tag on" onclick="filterExplore('all');catClick(this)">All</span>
+        <span class="tag" onclick="filterExplore('design');catClick(this)">🎨 Design</span>
+        <span class="tag" onclick="filterExplore('photo');catClick(this)">📸 Photo</span>
+        <span class="tag" onclick="filterExplore('video');catClick(this)">🎬 Video</span>
+        <span class="tag" onclick="filterExplore('music');catClick(this)">🎵 Music</span>
+        <span class="tag" onclick="filterExplore('writing');catClick(this)">✍️ Writing</span>
+        <span class="tag" onclick="filterExplore('dev');catClick(this)">💻 Dev</span>
+        <span class="tag" onclick="filterExplore('fashion');catClick(this)">👗 Fashion</span>
+        <span class="tag" onclick="filterExplore('illustration');catClick(this)">🖌️ Illustration</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div id="ex-count" style="font-size:.82rem;color:var(--tx-dim);"></div>
+        <select class="inp" style="width:auto;font-size:.78rem;padding:8px 12px;"><option>Most Relevant</option><option>Recently Active</option><option>Top Rated</option><option>Available Now</option></select>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;" id="ex-grid"></div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     PROFILE VIEW
+════════════════════════ -->
+<div id="p-profile" class="page" style="flex-direction:column;">
+  <nav class="tnav">
+    <div class="nbrand" onclick="sp('p-client')"><div class="ndot"></div>REDMARKET</div>
+    <div class="nlinks"><span class="nl" onclick="sp('p-explore')">← Back to Explore</span></div>
+    <div class="nr">
+      <div class="nbell" onclick="sp('p-notifs')">🔔</div>
+      <div class="nav-av" onclick="sp('p-settings')">CM</div>
+    </div>
+  </nav>
+  <div style="max-width:920px;margin:0 auto;padding:28px;width:100%;" id="pv-content"></div>
+</div>
+
+<!-- ════════════════════════
+     MY PROFILE (EDIT)
+════════════════════════ -->
+<div id="p-myprofile" class="page" style="flex-direction:column;">
+  <nav class="tnav">
+    <div class="nbrand" onclick="sp('p-creative')"><div class="ndot"></div>REDMARKET</div>
+    <div class="nlinks"><span class="nl" onclick="sp('p-creative')">← Dashboard</span></div>
+    <div class="nr"><button class="btn bp bsm" onclick="toast('✅ Profile saved!')">Save Changes</button></div>
+  </nav>
+  <div style="max-width:760px;margin:0 auto;padding:32px;width:100%;">
+    <div style="margin-bottom:24px;"><h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.7rem;">Edit Profile</h1><p style="font-size:.84rem;color:var(--tx-dim);">Manage how you appear to clients on REDMARKET</p></div>
+    <div class="scard" style="display:flex;align-items:center;gap:20px;margin-bottom:16px;">
+      <div class="av av-m" style="width:72px;height:72px;font-size:2rem;border-radius:var(--r-md);">C</div>
+      <div><div style="font-weight:600;font-size:.9rem;margin-bottom:6px;">Profile Photo</div><button class="btn bs bsm" onclick="toast('📸 Upload coming soon!')">Change Photo</button></div>
+    </div>
+    <div class="scard" style="margin-bottom:16px;">
+      <div style="font-weight:700;font-size:1rem;margin-bottom:14px;">Basic Information</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div class="iw"><label class="il">First Name</label><input class="inp" value="Chanda"/></div>
+        <div class="iw"><label class="il">Last Name</label><input class="inp" value="Mwale"/></div>
+      </div>
+      <div class="iw" style="margin-bottom:12px;"><label class="il">Creative Title</label><input class="inp" value="Visual Designer & Brand Strategist"/></div>
+      <div class="iw" style="margin-bottom:12px;"><label class="il">Short Bio</label><textarea class="inp" rows="3">Lusaka-based designer helping brands tell compelling visual stories. 6+ years experience in brand identity, UI, and illustration.</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="iw"><label class="il">Location</label><input class="inp" value="Lusaka, Zambia"/></div>
+        <div class="iw"><label class="il">Rate (ZMW/hr)</label><input class="inp" value="350"/></div>
+      </div>
+    </div>
+    <div class="scard" style="margin-bottom:16px;">
+      <div style="font-weight:700;font-size:1rem;margin-bottom:12px;">Skills & Services</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span class="sch on">Brand Identity</span><span class="sch on">UI Design</span><span class="sch on">Illustration</span>
+        <span class="sch" onclick="this.classList.toggle('on')">Motion Graphics</span>
+        <span class="sch" onclick="this.classList.toggle('on')">Web Design</span>
+        <span class="sch" onclick="this.classList.toggle('on')">3D Design</span>
+        <span class="sch" onclick="this.classList.toggle('on')">Typography</span>
+        <span class="sch" onclick="this.classList.toggle('on')">Photography</span>
+      </div>
+    </div>
+    <div class="scard" style="margin-bottom:16px;">
+      <div style="font-weight:700;font-size:1rem;margin-bottom:12px;">Availability</div>
+      <div class="tsel">
+        <div class="topt on"><div class="te">✅</div><div class="tn">Available</div><div class="td">Open to new work</div></div>
+        <div class="topt"><div class="te">🟡</div><div class="tn">Busy</div><div class="td">Limited capacity</div></div>
+      </div>
+    </div>
+    <div class="scard">
+      <div style="font-weight:700;font-size:1rem;margin-bottom:12px;">Social & Portfolio Links</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="iw"><label class="il">Portfolio Website</label><input class="inp" placeholder="https://yoursite.com"/></div>
+        <div class="iw"><label class="il">Instagram</label><input class="inp" placeholder="@handle"/></div>
+        <div class="iw"><label class="il">Behance / Dribbble</label><input class="inp" placeholder="Profile URL"/></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     MESSAGES
+════════════════════════ -->
+<div id="p-messages" class="page" style="flex-direction:column;">
+  <nav class="tnav">
+    <div class="nbrand" onclick="sp('p-client')"><div class="ndot"></div>REDMARKET</div>
+    <div class="nlinks">
+      <span class="nl" onclick="sp('p-client')">🏠 Home</span>
+      <span class="nl on">💬 Messages</span>
+    </div>
+    <div class="nr">
+      <div class="nbell" onclick="sp('p-notifs')">🔔<div class="npip"></div></div>
+      <div class="nav-av" onclick="sp('p-settings')">CM</div>
+    </div>
+  </nav>
+  <div class="mlout" id="msg-layout"></div>
+</div>
+
+<!-- ════════════════════════
+     PROJECTS
+════════════════════════ -->
+<div id="p-projects" class="page" style="flex-direction:column;">
+  <nav class="tnav">
+    <div class="nbrand" onclick="sp('p-client')"><div class="ndot"></div>REDMARKET</div>
+    <div class="nlinks">
+      <span class="nl" onclick="sp('p-client')">🏠 Home</span>
+      <span class="nl on">📋 Projects</span>
+    </div>
+    <div class="nr">
+      <button class="btn bp bsm" onclick="om('projM');renderProjModal()">+ New Project</button>
+      <div class="nbell" onclick="sp('p-notifs')">🔔</div>
+      <div class="nav-av" onclick="sp('p-settings')">CM</div>
+    </div>
+  </nav>
+  <div class="layout">
+    <aside class="sb">
+      <div class="sbi on"><span class="ic">📋</span>All Projects</div>
+      <div class="sbi"><span class="ic">🟢</span>Active</div>
+      <div class="sbi"><span class="ic">⏳</span>Pending</div>
+      <div class="sbi"><span class="ic">✅</span>Completed</div>
+      <div class="sbi"><span class="ic">📝</span>Drafts</div>
+    </aside>
+    <main class="mc">
+      <div style="margin-bottom:24px;"><h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.7rem;">Projects</h1><div style="font-size:.83rem;color:var(--tx-dim);">Manage your active and past projects</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+        <span class="tag on">All</span><span class="tag">Active</span><span class="tag">Pending</span><span class="tag">Completed</span><span class="tag">Draft</span>
+      </div>
+      <div id="pj-list" style="display:flex;flex-direction:column;gap:14px;"></div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     NOTIFICATIONS
+════════════════════════ -->
+<div id="p-notifs" class="page" style="flex-direction:column;">
+  <nav class="tnav">
+    <div class="nbrand" onclick="sp('p-client')"><div class="ndot"></div>REDMARKET</div>
+    <div class="nr">
+      <button class="btn bg-btn bsm" onclick="markAllRead()">Mark all read ✓</button>
+      <div class="nav-av" onclick="sp('p-settings')">CM</div>
+    </div>
+  </nav>
+  <div style="max-width:720px;margin:0 auto;padding:32px;width:100%;">
+    <div style="margin-bottom:24px;"><h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.7rem;">Notifications</h1><div id="n-count" style="font-size:.83rem;color:var(--tx-dim);"></div></div>
+    <div id="n-list"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     SAVED
+════════════════════════ -->
+<div id="p-saved" class="page" style="flex-direction:column;">
+  <nav class="tnav">
+    <div class="nbrand" onclick="sp('p-client')"><div class="ndot"></div>REDMARKET</div>
+    <div class="nr">
+      <div class="nbell" onclick="sp('p-notifs')">🔔<div class="npip"></div></div>
+      <div class="nav-av" onclick="sp('p-settings')">CM</div>
+    </div>
+  </nav>
+  <div style="max-width:1000px;margin:0 auto;padding:32px;width:100%;">
+    <div style="margin-bottom:24px;"><h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.7rem;">Saved</h1><div style="font-size:.83rem;color:var(--tx-dim);">Your bookmarked creatives</div></div>
+    <div style="display:flex;gap:8px;margin-bottom:24px;"><span class="tag on">Creatives (8)</span><span class="tag">Projects (4)</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;" id="sv-grid"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     SETTINGS
+════════════════════════ -->
+<div id="p-settings" class="page" style="flex-direction:column;">
+  <nav class="tnav">
+    <div class="nbrand" onclick="sp('p-client')"><div class="ndot"></div>REDMARKET</div>
+    <div class="nr"><button class="btn bg-btn bsm" onclick="sp('p-client')">← Dashboard</button><div class="nav-av">CM</div></div>
+  </nav>
+  <div style="max-width:900px;margin:0 auto;padding:32px;width:100%;">
+    <div style="margin-bottom:24px;"><h1 style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.7rem;">Settings</h1></div>
+    <div class="slout" id="s-layout"></div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<script>
+/* ═══ DATA ═══ */
+const CREATIVES=[
+  {id:1,name:'Chanda Mwale',role:'Visual Designer',loc:'Lusaka',skills:['Brand Identity','UI Design','Illustration'],rate:350,rating:4.9,reviews:12,avail:true,cv:'cv-m',av:'av-m',emoji:'🎨',bio:'Lusaka-based designer crafting compelling visual identities.',cat:'design'},
+  {id:2,name:'Mwamba Tembo',role:'Photographer',loc:'Copperbelt',skills:['Portrait','Commercial','Events'],rate:280,rating:4.8,reviews:8,avail:true,cv:'cv-sky',av:'av-sky',emoji:'📸',bio:'Documentary and commercial photographer.',cat:'photo'},
+  {id:3,name:'Thandiwe Banda',role:'Motion Designer',loc:'Lusaka',skills:['Motion Graphics','Animation','Video'],rate:420,rating:5.0,reviews:6,avail:false,cv:'cv-t',av:'av-t',emoji:'🎬',bio:'Award-winning motion designer creating immersive content.',cat:'video'},
+  {id:4,name:'Kelvin Phiri',role:'Music Producer',loc:'Lusaka',skills:['Beat Production','Mixing','Mastering'],rate:500,rating:4.7,reviews:15,avail:true,cv:'cv-sg',av:'av-sg',emoji:'🎵',bio:'Producer for artists across Southern Africa.',cat:'music'},
+  {id:5,name:'Nchimunya Zulu',role:'Copywriter',loc:'Ndola',skills:['Brand Copy','Content Strategy','Editing'],rate:200,rating:4.6,reviews:9,avail:true,cv:'cv-m',av:'av-sky',emoji:'✍️',bio:'Helping brands find their voice through purposeful copy.',cat:'writing'},
+  {id:6,name:'Mumba Chitalu',role:'Full Stack Developer',loc:'Lusaka',skills:['React','Node.js','Mobile Apps'],rate:600,rating:4.9,reviews:11,avail:true,cv:'cv-sky',av:'av-t',emoji:'💻',bio:'Building elegant digital products from idea to deployment.',cat:'dev'},
+  {id:7,name:'Lushomo Nkonde',role:'Fashion Designer',loc:'Livingstone',skills:['Fashion','Textile','Costume'],rate:320,rating:4.8,reviews:7,avail:false,cv:'cv-t',av:'av-sg',emoji:'👗',bio:'Contemporary Zambian fashion informed by heritage.',cat:'fashion'},
+  {id:8,name:'Bupe Kasonde',role:'Illustrator',loc:'Lusaka',skills:['Digital Art','Comics','Concept Art'],rate:250,rating:4.7,reviews:14,avail:true,cv:'cv-sg',av:'av-m',emoji:'🖌️',bio:'Vibrant illustrator bringing stories to life.',cat:'illustration'},
+  {id:9,name:'Mwila Mulenga',role:'Brand Strategist',loc:'Kitwe',skills:['Strategy','Positioning','Identity'],rate:450,rating:4.9,reviews:5,avail:true,cv:'cv-m',av:'av-sky',emoji:'💡',bio:'Strategic thinker helping brands define their narrative.',cat:'design'},
+  {id:10,name:'Sonia Phiri',role:'Video Director',loc:'Lusaka',skills:['Directing','Cinematography','Narrative'],rate:550,rating:5.0,reviews:4,avail:true,cv:'cv-sky',av:'av-t',emoji:'🎥',bio:'Telling Zambian stories through cinematic language.',cat:'video'},
+  {id:11,name:'Chisomo Banda',role:'UI/UX Designer',loc:'Lusaka',skills:['Product Design','Prototyping','Research'],rate:380,rating:4.8,reviews:10,avail:true,cv:'cv-t',av:'av-sg',emoji:'📱',bio:'Human-centred designer building digital experiences.',cat:'design'},
+  {id:12,name:'Nkole Mutale',role:'Recording Artist',loc:'Copperbelt',skills:['Vocals','Songwriting','Performance'],rate:700,rating:4.9,reviews:18,avail:true,cv:'cv-sg',av:'av-m',emoji:'🎤',bio:'Versatile vocalist merging Zambian rhythms with contemporary sound.',cat:'music'},
+];
+
+const PROJECTS=[
+  {id:1,title:'Brand Identity for Agri Startup',cat:'Design',budget:'K 8,500',deadline:'Apr 15',status:'active',skills:['Brand Identity','Logo','Guidelines'],desc:'Complete brand identity for a sustainable agriculture startup.'},
+  {id:2,title:'Product Photography — 40 SKUs',cat:'Photography',budget:'K 5,200',deadline:'Apr 22',status:'active',skills:['Product Photography','Retouching'],desc:'E-commerce product photography for a local skincare brand.'},
+  {id:3,title:'Corporate Video — Annual Report',cat:'Video',budget:'K 12,000',deadline:'May 1',status:'pending',skills:['Video Direction','Motion'],desc:'60-second highlight reel plus 3-minute full video for annual report.'},
+  {id:4,title:'Website Redesign & Build',cat:'Dev & Design',budget:'K 18,000',deadline:'May 20',status:'draft',skills:['UI Design','React','Frontend'],desc:'Full redesign and rebuild of corporate website with CMS.'},
+];
+
+const NOTIFS=[
+  {id:1,ic:'💬',cls:'nic-m',text:'<strong>Mwamba Tembo</strong> replied to your message.',time:'2 min ago',un:true},
+  {id:2,ic:'🎯',cls:'nic-h',text:'Your hire request to <strong>Chanda Mwale</strong> was accepted!',time:'1 hr ago',un:true},
+  {id:3,ic:'📋',cls:'nic-p',text:'3 new proposals on <strong>Brand Identity for Agri Startup</strong>.',time:'3 hr ago',un:true},
+  {id:4,ic:'💬',cls:'nic-m',text:'<strong>Kelvin Phiri</strong> sent you a collaboration invite.',time:'Yesterday',un:true},
+  {id:5,ic:'⭐',cls:'nic-a',text:'You received a new review — 5 stars!',time:'Yesterday',un:true},
+  {id:6,ic:'📋',cls:'nic-p',text:'Project <strong>Corporate Video</strong> updated to In Review.',time:'2 days ago',un:false},
+  {id:7,ic:'🤝',cls:'nic-h',text:'<strong>Thandiwe Banda</strong> accepted your collaboration request.',time:'2 days ago',un:false},
+];
+
+const MSGS=[
+  {id:1,name:'Mwamba Tembo',av:'av-sky',ini:'M',preview:"Sounds great, I can start Monday.",time:'2m',un:2,thread:[
+    {mine:false,text:"Hi! I saw your product photography project. I'd love to discuss.",time:'Mon 10:00'},
+    {mine:true,text:'Hey Mwamba! Yes, let\'s chat. The project is 40 SKUs for a skincare brand.',time:'Mon 10:15'},
+    {mine:false,text:'Perfect, what\'s the timeline?',time:'Mon 10:20'},
+    {mine:true,text:'Targeting April 22. Budget is ZMW 5,200.',time:'Mon 10:30'},
+    {mine:false,text:'Sounds great, I can start Monday.',time:'Now'},
+  ]},
+  {id:2,name:'Chanda Mwale',av:'av-m',ini:'C',preview:"I've sent over the brand concepts.",time:'1h',un:1,thread:[
+    {mine:false,text:'Morning! Here are the first 3 brand concepts for your review.',time:'9:00'},
+    {mine:true,text:'These look amazing! Can we hop on a call to review concept 2?',time:'9:45'},
+    {mine:false,text:"I've sent over the brand concepts.",time:'10:00'},
+  ]},
+  {id:3,name:'Kelvin Phiri',av:'av-sg',ini:'K',preview:'When do you need the tracks by?',time:'3h',un:0,thread:[
+    {mine:true,text:'Hi Kelvin, looking for original music for a brand film.',time:'Yesterday'},
+    {mine:false,text:'Love this kind of project. What mood are you going for?',time:'Yesterday'},
+    {mine:true,text:'Warm Afrobeats energy. 90 seconds.',time:'Yesterday'},
+    {mine:false,text:'When do you need the tracks by?',time:'3h ago'},
+  ]},
+];
+
+/* ═══ STATE ═══ */
+let userType='client', obStep=1, activeConv=0, projStep=1;
+let savedSet=new Set([1,2,3,4,5,6,7,8]);
+let notifs=[...NOTIFS];
+let activeCat='all', settingsTab='profile';
+
+/* ═══ NAVIGATION ═══ */
+function sp(id){
+  document.querySelectorAll('.page').forEach(p=>{p.classList.remove('on');p.classList.remove('fadein');});
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.add('on');
+  void el.offsetWidth;
+  el.classList.add('fadein');
+  window.scrollTo(0,0);
+  if(id==='p-client')renderClientDash();
+  if(id==='p-creative')renderCreativeDash();
+  if(id==='p-explore')renderExplore();
+  if(id==='p-messages')renderMessages();
+  if(id==='p-projects')renderProjects();
+  if(id==='p-notifs')renderNotifs();
+  if(id==='p-saved')renderSaved();
+  if(id==='p-settings')renderSettings();
+  if(id==='p-onboard'){obStep=1;renderOnboard();}
+}
+
+/* ═══ AUTH ═══ */
+function doLogin(){
+  if(!document.getElementById('l-em').value){toast('⚠️ Please enter your email.');return;}
+  toast('✅ Signed in! Setting up your workspace…');
+  setTimeout(()=>sp('p-onboard'),700);
+}
+function doSignup(){
+  const fn=document.getElementById('s-fn').value;
+  const pw=document.getElementById('s-pw').value;
+  const pw2=document.getElementById('s-pw2').value;
+  if(!fn){toast('⚠️ Please enter your name.');return;}
+  if(pw&&pw!==pw2){toast('⚠️ Passwords do not match.');return;}
+  toast('🎉 Account created!');
+  setTimeout(()=>sp('p-onboard'),700);
+}
+function selType(t){
+  userType=t;
+  document.getElementById('tc-client').classList.toggle('on',t==='client');
+  document.getElementById('tc-creative').classList.toggle('on',t==='creative');
+}
+
+/* ═══ ONBOARDING ═══ */
+const OB_STEPS={
+  client:[
+    {title:'Welcome to REDMARKET',sub:'Setting up your client account.',html:'<div class="tsel"><div class="topt on"><div class="te">🏢</div><div class="tn">Client</div><div class="td">Hire creatives</div></div></div>'},
+    {title:'About You',sub:'Tell us about yourself.',html:'<div style="display:flex;flex-direction:column;gap:12px;"><div class="iw"><label class="il">Full Name</label><input class="inp" value="Chanda Mwale"/></div><div class="iw"><label class="il">Company / Brand</label><input class="inp" placeholder="Rawdraw Inc."/></div><div class="iw"><label class="il">Industry</label><select class="inp"><option>Creative Agency</option><option>Tech</option><option>Finance</option><option>NGO</option></select></div></div>'},
+    {title:'What do you need?',sub:'Your primary creative needs.',html:'<div style="display:flex;flex-wrap:wrap;gap:8px;"><span class="sch" onclick="this.classList.toggle(\'on\')">Brand Design</span><span class="sch" onclick="this.classList.toggle(\'on\')">Photography</span><span class="sch" onclick="this.classList.toggle(\'on\')">Video Production</span><span class="sch" onclick="this.classList.toggle(\'on\')">Music / Audio</span><span class="sch" onclick="this.classList.toggle(\'on\')">Copywriting</span><span class="sch" onclick="this.classList.toggle(\'on\')">Web Development</span><span class="sch" onclick="this.classList.toggle(\'on\')">Illustration</span></div>'},
+    {title:'Your Location',sub:'Where is your business based?',html:'<div style="display:flex;flex-direction:column;gap:12px;"><div class="iw"><label class="il">Province</label><select class="inp"><option>Lusaka</option><option>Copperbelt</option><option>Southern</option><option>Eastern</option></select></div><div class="iw"><label class="il">City</label><input class="inp" placeholder="e.g. Lusaka"/></div></div>'},
+    {title:"You're all set! 🎉",sub:'Your account is ready.',html:'<div style="text-align:center;padding:20px 0;"><div style="font-size:4rem;margin-bottom:16px;">🚀</div><div style="font-family:\'Playfair Display\',serif;font-weight:700;font-size:1.2rem;margin-bottom:8px;">Welcome to REDMARKET</div><div style="font-size:.85rem;color:var(--tx-dim);">Explore thousands of verified Zambian creatives ready to bring your vision to life.</div></div>'},
+  ],
+  creative:[
+    {title:'Welcome, Creative',sub:'Building your creative profile.',html:'<div class="tsel"><div class="topt on"><div class="te">🎨</div><div class="tn">Creative</div><div class="td">Offer your skills</div></div></div>'},
+    {title:'Your Creative Identity',sub:'Tell the world who you are.',html:'<div style="display:flex;flex-direction:column;gap:12px;"><div class="iw"><label class="il">Full Name</label><input class="inp" placeholder="Your name"/></div><div class="iw"><label class="il">Creative Title</label><input class="inp" placeholder="e.g. Visual Designer, Photographer"/></div><div class="iw"><label class="il">Short Bio</label><textarea class="inp" rows="2" placeholder="What makes your work unique?"></textarea></div></div>'},
+    {title:'Your Skills',sub:'Select your main disciplines.',html:'<div style="display:flex;flex-wrap:wrap;gap:8px;"><span class="sch" onclick="this.classList.toggle(\'on\')">Brand Identity</span><span class="sch" onclick="this.classList.toggle(\'on\')">UI/UX Design</span><span class="sch" onclick="this.classList.toggle(\'on\')">Photography</span><span class="sch" onclick="this.classList.toggle(\'on\')">Video</span><span class="sch" onclick="this.classList.toggle(\'on\')">Music</span><span class="sch" onclick="this.classList.toggle(\'on\')">Writing</span><span class="sch" onclick="this.classList.toggle(\'on\')">Development</span><span class="sch" onclick="this.classList.toggle(\'on\')">Illustration</span><span class="sch" onclick="this.classList.toggle(\'on\')">Fashion</span></div>'},
+    {title:'Location & Availability',sub:'Help clients find and hire you.',html:'<div style="display:flex;flex-direction:column;gap:12px;"><div class="iw"><label class="il">Province</label><select class="inp"><option>Lusaka</option><option>Copperbelt</option><option>Southern</option></select></div><div class="iw"><label class="il">Hourly Rate (ZMW)</label><input class="inp" placeholder="e.g. 350"/></div><div class="tsel"><div class="topt on" style="padding:12px;"><div class="te" style="font-size:1.4rem;">✅</div><div class="tn" style="font-size:.8rem;">Available</div></div><div class="topt" style="padding:12px;"><div class="te" style="font-size:1.4rem;">🟡</div><div class="tn" style="font-size:.8rem;">Part-time</div></div></div></div>'},
+    {title:'You\'re live! ✦',sub:'Your profile is ready.',html:'<div style="text-align:center;padding:20px 0;"><div style="font-size:4rem;margin-bottom:16px;">🌟</div><div style="font-family:\'Playfair Display\',serif;font-weight:700;font-size:1.2rem;margin-bottom:8px;">Welcome to REDMARKET</div><div style="font-size:.85rem;color:var(--tx-dim);">Your profile is live. Add portfolio work to start attracting clients.</div></div>'},
+  ]
+};
+function renderOnboard(){
+  const steps=OB_STEPS[userType]||OB_STEPS.client;
+  const s=steps[obStep-1];
+  // Steps UI
+  let stepsHTML='';
+  for(let i=1;i<=5;i++){
+    const cls=i<obStep?'sdot dn':i===obStep?'sdot on':'sdot';
+    stepsHTML+=`<div class="${cls}">${i<obStep?'✓':i}</div>`;
+    if(i<5)stepsHTML+=`<div class="sline${i<obStep?' dn':''}"></div>`;
+  }
+  document.getElementById('ob-steps').innerHTML=stepsHTML;
+  document.getElementById('ob-content').innerHTML=`
+    <div style="margin-bottom:20px;">
+      <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.4rem;margin-bottom:6px;">${s.title}</h2>
+      <p style="font-size:.84rem;color:var(--tx-dim);">${s.sub}</p>
+    </div>
+    <div class="fadein">${s.html}</div>`;
+  document.getElementById('ob-back').style.display=obStep>1?'':'none';
+  document.getElementById('ob-next').textContent=obStep===5?'Enter Dashboard →':'Continue →';
+}
+function obNext(){if(obStep<5){obStep++;renderOnboard();}else{sp(userType==='creative'?'p-creative':'p-client');}}
+function obBack(){if(obStep>1){obStep--;renderOnboard();}}
+
+/* ═══ CLIENT DASH ═══ */
+function renderClientDash(){
+  const g=document.getElementById('dc-grid');
+  if(g)g.innerHTML=CREATIVES.slice(0,4).map(miniCard).join('');
+  const pl=document.getElementById('dp-list');
+  if(pl)pl.innerHTML=PROJECTS.slice(0,3).map(pjCard).join('');
+}
+
+/* ═══ CREATIVE DASH ═══ */
+function renderCreativeDash(){
+  const iq=document.getElementById('cr-inquiries');
+  if(iq)iq.innerHTML=[
+    {from:'Mwile Tech Co.',type:'Hire Request',msg:'Looking for a brand designer for a 3-week project.',budget:'K 7,500',time:'1h ago'},
+    {from:'Zanaco Bank',type:'Collaboration',msg:'Redesigning our annual report. Love your style.',budget:'K 12,000',time:'3h ago'},
+    {from:'AfriCreative Ltd.',type:'Hire Request',msg:'Need UI design for a fintech app MVP.',budget:'K 20,000',time:'Yesterday'},
+  ].map(i=>`
+    <div class="csm" style="padding:16px;display:flex;align-items:flex-start;gap:14px;cursor:pointer;">
+      <div style="font-size:1.5rem;flex-shrink:0;">${i.type==='Hire Request'?'🎯':'🤝'}</div>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <span style="font-weight:600;font-size:.86rem;">${i.from}</span>
+          <span class="badge ${i.type==='Hire Request'?'bm':'bsk'}">${i.type}</span>
+        </div>
+        <div style="font-size:.8rem;color:var(--tx-dim);margin-bottom:8px;">${i.msg}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--mu);font-weight:600;">${i.budget}</span>
+          <span style="font-size:.7rem;color:var(--tx-dim);">${i.time}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button class="btn bp bsm" onclick="event.stopPropagation();toast('✅ Inquiry accepted!')">Accept</button>
+        <button class="btn bg-btn bsm" onclick="event.stopPropagation()">Pass</button>
+      </div>
+    </div>
+  `).join('');
+  const pv=document.getElementById('cr-portfolio');
+  if(pv)pv.innerHTML=['🎨','📷','🎬','🖌️','🎭','🌅','📐','✦'].map((e,i)=>`
+    <div class="pthumb ${['cv-m','cv-sky','cv-t','cv-sg','cv-m','cv-sky','cv-t','cv-sg'][i]}">
+      <span style="position:relative;z-index:1;">${e}</span>
+      <div class="ptov">🔍</div>
+    </div>
+  `).join('');
+}
+
+/* ═══ EXPLORE ═══ */
+function filterExplore(cat){activeCat=cat;}
+function catClick(el){
+  document.querySelectorAll('#ex-cats .tag').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  renderExplore();
+}
+function renderExplore(){
+  const g=document.getElementById('ex-grid');
+  if(!g)return;
+  const q=(document.getElementById('ex-search')||{}).value?.toLowerCase()||'';
+  const filt=CREATIVES.filter(c=>
+    (activeCat==='all'||c.cat===activeCat)&&
+    (!q||c.name.toLowerCase().includes(q)||c.role.toLowerCase().includes(q)||c.skills.some(s=>s.toLowerCase().includes(q)))
+  );
+  const cnt=document.getElementById('ex-count');
+  if(cnt)cnt.textContent=`Showing ${filt.length} creative${filt.length!==1?'s':''}`;
+  g.innerHTML=filt.map(c=>`
+    <div class="ccard" onclick="showProfile(${c.id})">
+      <div class="${c.cv}" style="height:90px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;">${c.emoji}</div>
+      <div style="padding:0 16px 16px;">
+        <div class="cc-av-w">
+          <div class="av ${c.av} cc-av" style="width:56px;height:56px;font-size:1.3rem;border-radius:var(--r-md);">${c.name[0]}</div>
+          ${c.avail?'<div class="cc-avail"></div>':''}
+        </div>
+        <div class="ccn">${c.name}</div>
+        <div class="ccr">${c.role} · ${c.loc}</div>
+        <div class="ccsk">${c.skills.map(s=>`<span>${s}</span>`).join('')}</div>
+        <div class="ccft">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--tx-mid);"><strong style="color:var(--char);font-size:.9rem;">K${c.rate}</strong>/hr</div>
+          <div style="font-size:.7rem;color:var(--mu);">${'★'.repeat(Math.round(c.rating))} <span style="color:var(--tx-dim);">${c.rating}</span></div>
+        </div>
+      </div>
+      <div class="cca">
+        <button class="btn bp bsm" style="flex:1;" onclick="event.stopPropagation();om('hireM')">Hire</button>
+        <button class="btn bs bsm" onclick="event.stopPropagation();toggleSave(${c.id},this)">${savedSet.has(c.id)?'❤️':'🤍'} Save</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ═══ PROFILE VIEW ═══ */
+function showProfile(id){
+  const c=CREATIVES.find(x=>x.id===id);
+  if(!c)return;
+  document.getElementById('pv-content').innerHTML=`
+    <div style="background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh);margin-bottom:24px;">
+      <div class="${c.cv}" style="height:160px;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;">
+        <span style="position:relative;z-index:1;">${c.emoji}</span>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(237,228,211,.9));"></div>
+      </div>
+      <div style="padding:0 32px 28px;">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:-36px;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+          <div class="av ${c.av}" style="width:80px;height:80px;font-size:2rem;border-radius:var(--r-md);border:4px solid var(--ivory);box-shadow:0 4px 20px rgba(28,26,23,.15);">${c.name[0]}</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn bg-btn bsm" onclick="om('collabM')">🤝 Collaborate</button>
+            <button class="btn bs bsm" onclick="toggleSave(${c.id},this)">${savedSet.has(c.id)?'❤️ Saved':'🤍 Save'}</button>
+            <button class="btn bp" onclick="om('hireM')">Hire ${c.name.split(' ')[0]}</button>
+          </div>
+        </div>
+        <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.6rem;margin-bottom:8px;">${c.name}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:.8rem;color:var(--tx-dim);align-items:center;">
+          <span>🎭 ${c.role}</span><span>📍 ${c.loc}</span><span>💰 K${c.rate}/hr</span><span>⭐ ${c.rating} (${c.reviews} reviews)</span>
+          ${c.avail?'<span class="badge bsg dot-b">Available Now</span>':'<span class="badge bt dot-b">Currently Busy</span>'}
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start;">
+      <div>
+        <div class="scard" style="margin-bottom:14px;">
+          <div style="font-weight:700;margin-bottom:10px;">About</div>
+          <p style="font-size:.88rem;color:var(--tx-mid);line-height:1.75;">${c.bio} Passionate about elevating Zambian creative standards and building lasting brand relationships with integrity.</p>
+        </div>
+        <div class="scard" style="margin-bottom:14px;">
+          <div style="font-weight:700;margin-bottom:12px;">Skills</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">${c.skills.concat(['Figma','Adobe CC','Strategy','Client Management']).map(s=>`<span class="sch on" style="cursor:default;">${s}</span>`).join('')}</div>
+        </div>
+        <div class="scard" style="margin-bottom:14px;">
+          <div style="font-weight:700;margin-bottom:14px;">Portfolio</div>
+          <div class="pgrid">${['🎨','📐','🖌️','💡','🎭','🌅','📊','✦'].map((e,i)=>`
+            <div class="pthumb ${['cv-m','cv-sky','cv-t','cv-sg','cv-m','cv-sky','cv-t','cv-sg'][i]}" onclick="toast('🖼️ Portfolio lightbox in production build!')">
+              <span style="position:relative;z-index:1;">${e}</span><div class="ptov">🔍</div>
+            </div>`).join('')}</div>
+        </div>
+        <div class="scard">
+          <div style="font-weight:700;margin-bottom:14px;">Reviews (${c.reviews})</div>
+          ${[{name:'Mwile Enterprises',text:'Exceptional work. Delivered ahead of schedule.',r:5,t:'2 weeks ago'},{name:'TechZam Ltd',text:'Creative, professional, and easy to work with.',r:5,t:'1 month ago'},{name:'Zambia Tourism',text:'Great attention to brand guidelines under tight deadlines.',r:4,t:'2 months ago'}].map(rv=>`
+            <div style="padding:14px 0;border-bottom:1px solid var(--gb2);">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><strong style="font-size:.85rem;">${rv.name}</strong><span style="font-size:.7rem;color:var(--tx-dim);">${rv.t}</span></div>
+              <div style="color:var(--mu);font-size:.78rem;margin-bottom:5px;">${'★'.repeat(rv.r)}${'☆'.repeat(5-rv.r)}</div>
+              <div style="font-size:.82rem;color:var(--tx-mid);">${rv.text}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div>
+        <div class="scard" style="margin-bottom:14px;">
+          <div style="font-weight:700;font-size:.95rem;margin-bottom:14px;">Quick Actions</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button class="btn bp" style="width:100%;" onclick="om('hireM')">🎯 Hire Now</button>
+            <button class="btn bsky" style="width:100%;" onclick="om('collabM')">🤝 Collaborate</button>
+            <button class="btn bs" style="width:100%;" onclick="sp('p-messages')">💬 Message</button>
+          </div>
+        </div>
+        <div class="scard">
+          <div style="font-weight:700;font-size:.9rem;margin-bottom:12px;">Details</div>
+          <div style="font-size:.8rem;color:var(--tx-mid);display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;"><span>Rate</span><strong style="color:var(--char);">K${c.rate}/hr</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span>Location</span><strong style="color:var(--char);">${c.loc}</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span>Rating</span><strong style="color:var(--mu);">⭐ ${c.rating}/5</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span>Projects</span><strong style="color:var(--char);">${c.reviews} done</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span>Status</span><span class="badge ${c.avail?'bsg':'bt'}">${c.avail?'Available':'Busy'}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  sp('p-profile');
+}
+
+/* ═══ MESSAGES ═══ */
+function renderMessages(){
+  const l=document.getElementById('msg-layout');
+  l.innerHTML=`
+    <div class="mcsb">
+      <div class="mcsb-hd">
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;margin-bottom:12px;">Messages</div>
+        <div style="display:flex;align-items:center;gap:8px;background:var(--gw2);border:1px solid var(--gb2);border-radius:var(--r-sm);padding:8px 12px;">
+          <span style="opacity:.5;">🔍</span>
+          <input style="background:none;border:none;font-size:.82rem;flex:1;" placeholder="Search…"/>
+        </div>
+      </div>
+      ${MSGS.map((m,i)=>`
+        <div class="mci ${i===activeConv?'on':''}" onclick="setConv(${i})">
+          <div class="av ${m.av}" style="width:40px;height:40px;font-size:.9rem;border-radius:var(--r-sm);">${m.ini}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:.85rem;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.name}</div>
+            <div style="font-size:.75rem;color:var(--tx-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.preview}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+            <span style="font-size:.65rem;color:var(--tx-dim);">${m.time}</span>
+            ${m.un?`<div style="min-width:18px;height:18px;padding:0 5px;background:var(--mu);border-radius:var(--r-f);font-size:.65rem;font-weight:700;color:var(--char);display:flex;align-items:center;justify-content:center;">${m.un}</div>`:''}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="mmain">
+      <div class="mhdr">
+        <div class="av ${MSGS[activeConv].av}" style="width:36px;height:36px;font-size:.85rem;border-radius:var(--r-sm);">${MSGS[activeConv].ini}</div>
+        <div>
+          <div style="font-weight:600;font-size:.9rem;">${MSGS[activeConv].name}</div>
+          <div style="font-size:.72rem;color:var(--sage);display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;background:var(--sage);border-radius:50%;display:inline-block;"></span>Online</div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;">
+          <button class="btn bg-btn bsm" onclick="om('hireM')">Hire</button>
+        </div>
+      </div>
+      <div class="mthread" id="mth">
+        ${MSGS[activeConv].thread.map(m=>`
+          <div class="mbw ${m.mine?'mine':''}">
+            ${!m.mine?`<div class="av ${MSGS[activeConv].av}" style="width:28px;height:28px;font-size:.7rem;border-radius:6px;">${MSGS[activeConv].ini}</div>`:''}
+            <div class="mb ${m.mine?'mine':'their'}">${m.text}</div>
+            <div class="mt">${m.time}</div>
+          </div>`).join('')}
+      </div>
+      <div class="mbar">
+        <button class="ibt" style="border-radius:50%;">😊</button>
+        <input class="mi" id="mi" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendMsg()"/>
+        <button class="ibt" style="border-radius:50%;">📎</button>
+        <div class="msnd" onclick="sendMsg()">➤</div>
+      </div>
+    </div>
+  `;
+}
+function setConv(i){activeConv=i;renderMessages();}
+function sendMsg(){
+  const inp=document.getElementById('mi');
+  if(!inp||!inp.value.trim())return;
+  const th=document.getElementById('mth');
+  const d=document.createElement('div');
+  d.className='mbw mine';
+  d.innerHTML=`<div class="mb mine">${inp.value}</div><div class="mt">Now</div>`;
+  th.appendChild(d);
+  inp.value='';
+  th.scrollTop=th.scrollHeight;
+}
+
+/* ═══ PROJECTS ═══ */
+function renderProjects(){
+  const l=document.getElementById('pj-list');
+  if(l)l.innerHTML=PROJECTS.map(p=>pjCard(p,true)).join('');
+}
+function pjCard(p,full=false){
+  const sc={active:'bsg',pending:'bsk',draft:'bt',completed:'bm'};
+  return `<div class="csm" style="padding:22px 24px;cursor:pointer;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span class="badge ${sc[p.status]||'bm'}">${p.status[0].toUpperCase()+p.status.slice(1)}</span><span style="font-size:.72rem;color:var(--tx-dim);">${p.cat}</span></div>
+      ${full?`<div style="display:flex;gap:8px;"><button class="btn bg-btn bsm" onclick="toast('✏️ Opening editor…')">Edit</button><button class="btn bp bsm" onclick="om('hireM')">Find Talent</button></div>`:''}
+    </div>
+    <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;margin-bottom:6px;">${p.title}</div>
+    <div style="font-size:.82rem;color:var(--tx-dim);line-height:1.55;margin-bottom:12px;">${p.desc}</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">${p.skills.map(s=>`<span class="tag" style="cursor:default;font-size:.65rem;">${s}</span>`).join('')}</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--mu);font-weight:600;">${p.budget}</span>
+      <span style="font-size:.72rem;color:var(--tx-dim);">📅 Due ${p.deadline}</span>
+    </div>
+  </div>`;
+}
+
+/* ═══ NOTIFICATIONS ═══ */
+function renderNotifs(){
+  const u=notifs.filter(n=>n.un).length;
+  const cnt=document.getElementById('n-count');
+  if(cnt)cnt.textContent=u?`${u} unread`:'All caught up!';
+  const l=document.getElementById('n-list');
+  if(l)l.innerHTML=notifs.map(n=>`
+    <div class="nitem ${n.un?'un':''}" onclick="markRead(${n.id})">
+      <div class="nic ${n.cls}">${n.ic}</div>
+      <div style="flex:1;">
+        <div style="font-size:.83rem;color:var(--tx);line-height:1.5;margin-bottom:4px;">${n.text}</div>
+        <div style="font-size:.7rem;color:var(--tx-dim);">${n.time}</div>
+      </div>
+      ${n.un?'<div class="ndot"></div>':''}
+    </div>`).join('');
+}
+function markRead(id){notifs=notifs.map(n=>n.id===id?{...n,un:false}:n);renderNotifs();}
+function markAllRead(){notifs=notifs.map(n=>({...n,un:false}));renderNotifs();toast('✅ All marked as read.');}
+
+/* ═══ SAVED ═══ */
+function renderSaved(){
+  const g=document.getElementById('sv-grid');
+  if(!g)return;
+  const saved=CREATIVES.filter(c=>savedSet.has(c.id));
+  if(!saved.length){g.innerHTML=`<div style="grid-column:1/-1;display:flex;flex-direction:column;align-items:center;padding:60px 24px;gap:16px;text-align:center;"><div style="font-size:3.5rem;opacity:.6;">🤍</div><div style="font-family:'Playfair Display',serif;font-size:1.2rem;">Nothing saved yet</div><div style="font-size:.85rem;color:var(--tx-dim);">Browse creatives and tap the heart to save them.</div><button class="btn bp" onclick="sp('p-explore')">Explore Creatives</button></div>`;return;}
+  g.innerHTML=saved.map(c=>miniCard(c,true)).join('');
+}
+function miniCard(c,withRem=false){
+  return `<div class="csm" style="padding:0;overflow:hidden;cursor:pointer;" onclick="showProfile(${c.id})">
+    <div class="${c.cv}" style="height:70px;display:flex;align-items:center;justify-content:center;font-size:2rem;">${c.emoji}</div>
+    <div style="padding:12px 14px;">
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:.92rem;margin-bottom:2px;">${c.name}</div>
+      <div style="font-size:.72rem;color:var(--tx-dim);margin-bottom:8px;">${c.role} · ${c.loc}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--mu);">K${c.rate}/hr</span>
+        <span class="badge ${c.avail?'bsg':'bt'}" style="font-size:.6rem;padding:2px 7px;">${c.avail?'✓ Avail':'Busy'}</span>
+      </div>
+      ${withRem?`<button class="btn bg-btn bsm" style="width:100%;margin-top:8px;font-size:.72rem;" onclick="event.stopPropagation();removeSaved(${c.id})">🗑 Remove</button>`:''}
+    </div>
+  </div>`;
+}
+function toggleSave(id,btn){
+  if(savedSet.has(id)){savedSet.delete(id);if(btn)btn.innerHTML='🤍 Save';toast('💔 Removed from saved.');}
+  else{savedSet.add(id);if(btn)btn.innerHTML='❤️ Saved';toast('❤️ Saved to your list!');}
+}
+function removeSaved(id){savedSet.delete(id);renderSaved();toast('💔 Removed from saved.');}
+
+/* ═══ SETTINGS ═══ */
+function renderSettings(){
+  const l=document.getElementById('s-layout');
+  if(!l)return;
+  const tabs=[{id:'profile',ic:'👤',lbl:'Profile'},{id:'account',ic:'🔑',lbl:'Account'},{id:'password',ic:'🔒',lbl:'Password'},{id:'notifs',ic:'🔔',lbl:'Notifications'},{id:'privacy',ic:'🛡️',lbl:'Privacy'},{id:'appearance',ic:'🎨',lbl:'Appearance'},{id:'billing',ic:'💳',lbl:'Billing'}];
+  l.innerHTML=`
+    <div>
+      <div style="background:var(--gw);border:1px solid var(--gb);border-radius:var(--r-lg);padding:10px;backdrop-filter:var(--blur-sm);">
+        ${tabs.map(t=>`<div class="sni ${t.id===settingsTab?'on':''}" onclick="switchSTab('${t.id}')">${t.ic} ${t.lbl}</div>`).join('')}
+        <div class="div"></div>
+        <div class="sni" style="color:var(--terra);" onclick="sp('p-land')">👋 Sign Out</div>
+      </div>
+    </div>
+    <div>
+      <div id="sp-profile" class="span ${settingsTab==='profile'?'on':''}">
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:4px;">Profile</div>
+        <div style="font-size:.82rem;color:var(--tx-dim);margin-bottom:20px;">Update your public profile.</div>
+        <div class="scard">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+            <div class="av av-m" style="width:64px;height:64px;font-size:1.8rem;border-radius:var(--r-md);">C</div>
+            <button class="btn bs bsm" onclick="toast('📸 Photo upload in production build!')">Change Photo</button>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div class="iw"><label class="il">First Name</label><input class="inp" value="Chanda"/></div>
+            <div class="iw"><label class="il">Last Name</label><input class="inp" value="Mwale"/></div>
+          </div>
+          <div class="iw" style="margin-bottom:12px;"><label class="il">Email</label><input class="inp" value="chanda@rawdraw.co" type="email"/></div>
+          <div class="iw" style="margin-bottom:16px;"><label class="il">Phone</label><input class="inp" placeholder="+260 9XX XXX XXX"/></div>
+          <button class="btn bp" onclick="toast('✅ Profile updated!')">Save Changes</button>
+        </div>
+      </div>
+      <div id="sp-account" class="span ${settingsTab==='account'?'on':''}">
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:20px;">Account</div>
+        <div class="scard"><div style="font-weight:600;margin-bottom:14px;">Account Type</div>
+          <div class="tsel"><div class="topt on"><div class="te">🏢</div><div class="tn">Client</div><div class="td">Current mode</div></div><div class="topt" onclick="toast('✅ Switched to Creative mode!')"><div class="te">🎨</div><div class="tn">Creative</div><div class="td">Switch mode</div></div></div>
+        </div>
+      </div>
+      <div id="sp-password" class="span ${settingsTab==='password'?'on':''}">
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:20px;">Change Password</div>
+        <div class="scard">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="iw"><label class="il">Current Password</label><input class="inp" type="password" placeholder="••••••••"/></div>
+            <div class="iw"><label class="il">New Password</label><input class="inp" type="password" placeholder="Min. 8 characters"/></div>
+            <div class="iw"><label class="il">Confirm New Password</label><input class="inp" type="password" placeholder="Re-enter new password"/></div>
+            <button class="btn bp" style="align-self:flex-start;" onclick="toast('✅ Password updated!')">Update Password</button>
+          </div>
+        </div>
+      </div>
+      <div id="sp-notifs" class="span ${settingsTab==='notifs'?'on':''}">
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:20px;">Notification Preferences</div>
+        <div class="scard">
+          ${[['New Messages','Direct message notifications',true],['Project Updates','Updates on active projects',true],['Hire Requests','When clients want to hire you',true],['New Reviews','When someone reviews your work',true],['Platform News','Announcements from REDMARKET',false],['Newsletter','Tips and inspiration',false]].map(([n,d,c])=>`
+            <div class="tgl-w">
+              <div><div style="font-size:.88rem;font-weight:500;">${n}</div><div style="font-size:.75rem;color:var(--tx-dim);">${d}</div></div>
+              <label class="tgl"><input type="checkbox" ${c?'checked':''}/><div class="tsl"></div></label>
+            </div>`).join('')}
+          <button class="btn bp bsm" style="margin-top:16px;" onclick="toast('✅ Preferences saved!')">Save</button>
+        </div>
+      </div>
+      <div id="sp-privacy" class="span ${settingsTab==='privacy'?'on':''}">
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:20px;">Privacy</div>
+        <div class="scard">
+          ${[['Public Profile','Anyone can view your profile',true],['Show in Search','Appear in explore results',true],['Show Availability','Display availability status',true],['Show Rate','Show hourly rate on profile',false]].map(([n,d,c])=>`
+            <div class="tgl-w">
+              <div><div style="font-size:.88rem;font-weight:500;">${n}</div><div style="font-size:.75rem;color:var(--tx-dim);">${d}</div></div>
+              <label class="tgl"><input type="checkbox" ${c?'checked':''}/><div class="tsl"></div></label>
+            </div>`).join('')}
+          <button class="btn bp bsm" style="margin-top:16px;" onclick="toast('✅ Privacy settings saved!')">Save</button>
+        </div>
+      </div>
+      <div id="sp-appearance" class="span ${settingsTab==='appearance'?'on':''}">
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:20px;">Appearance</div>
+        <div class="scard">
+          <div style="font-weight:600;margin-bottom:12px;">Theme</div>
+          <div class="tsel">
+            <div class="topt on"><div class="te">☀️</div><div class="tn">Light</div><div class="td">Default</div></div>
+            <div class="topt" onclick="toast('🌙 Dark mode coming soon!')"><div class="te">🌙</div><div class="tn">Dark</div><div class="td">Coming soon</div></div>
+          </div>
+        </div>
+      </div>
+      <div id="sp-billing" class="span ${settingsTab==='billing'?'on':''}">
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:20px;">Billing</div>
+        <div class="scard">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><div style="font-weight:600;">Current Plan</div><span class="badge bm">Free</span></div>
+          <div style="font-size:.82rem;color:var(--tx-dim);line-height:1.6;margin-bottom:14px;">Upgrade to Pro for unlimited messaging, featured placement, and analytics.</div>
+          <button class="btn bp" onclick="toast('✨ Pro plan coming soon!')">Upgrade to Pro ✦</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function switchSTab(id){
+  settingsTab=id;
+  document.querySelectorAll('.sni').forEach((el,i)=>{
+    const ids=['profile','account','password','notifs','privacy','appearance','billing'];
+    el.classList.toggle('on',ids[i]===id);
+  });
+  document.querySelectorAll('.span').forEach(p=>p.classList.remove('on'));
+  const panel=document.getElementById(`sp-${id}`);
+  if(panel)panel.classList.add('on');
+}
+
+/* ═══ PROJECT POST MODAL ═══ */
+const PJ_STEPS=[
+  {title:'Project Basics',html:`<div style="display:flex;flex-direction:column;gap:12px;"><div class="iw"><label class="il">Project Title</label><input class="inp" placeholder="e.g. Brand Identity for Tech Startup"/></div><div class="iw"><label class="il">Category</label><select class="inp"><option>Design & Branding</option><option>Photography</option><option>Video</option><option>Music</option><option>Writing</option><option>Development</option></select></div><div class="iw"><label class="il">Description</label><textarea class="inp" rows="3" placeholder="Describe your project in detail…"></textarea></div></div>`},
+  {title:'Requirements',html:`<div style="display:flex;flex-direction:column;gap:12px;"><div class="iw"><label class="il">Required Skills</label><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;"><span class="sch" onclick="this.classList.toggle('on')">Brand Identity</span><span class="sch" onclick="this.classList.toggle('on')">Logo Design</span><span class="sch" onclick="this.classList.toggle('on')">UI/UX</span><span class="sch" onclick="this.classList.toggle('on')">Photography</span><span class="sch" onclick="this.classList.toggle('on')">Video</span><span class="sch" onclick="this.classList.toggle('on')">Copywriting</span></div></div><div class="iw"><label class="il">Project Type</label><div class="tsel"><div class="topt on" style="padding:10px;"><div class="te" style="font-size:1.3rem;">📌</div><div class="tn">One-off</div></div><div class="topt" style="padding:10px;"><div class="te" style="font-size:1.3rem;">🔄</div><div class="tn">Ongoing</div></div></div></div></div>`},
+  {title:'Budget & Timeline',html:`<div style="display:flex;flex-direction:column;gap:12px;"><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><div class="iw"><label class="il">Budget (ZMW)</label><input class="inp" placeholder="e.g. 8,000"/></div><div class="iw"><label class="il">Deadline</label><input class="inp" type="date"/></div></div><div class="iw"><label class="il">Contact Preference</label><select class="inp"><option>Message on REDMARKET</option><option>Email</option><option>WhatsApp</option></select></div><div style="background:var(--gw2);border:1px solid var(--gb2);border-radius:var(--r-sm);padding:20px;text-align:center;cursor:pointer;" onclick="toast('📎 File upload ready in production build.')"><div style="font-size:1.5rem;margin-bottom:6px;">📎</div><div style="font-size:.78rem;color:var(--tx-dim);">Click to attach brief or reference files</div></div></div>`},
+  {title:'Review & Post',html:`<div style="background:var(--mu-d);border:1px solid rgba(212,160,23,.3);border-radius:var(--r-md);padding:18px;margin-bottom:16px;"><div style="font-size:.82rem;color:#7A5200;">✅ Your project will be visible to relevant creatives. You'll receive proposals in your messages.</div></div><div style="font-size:.82rem;display:flex;flex-direction:column;gap:8px;"><div style="display:flex;justify-content:space-between;"><span style="color:var(--tx-dim);">Category</span><strong>Design & Branding</strong></div><div style="display:flex;justify-content:space-between;"><span style="color:var(--tx-dim);">Budget</span><strong style="color:var(--mu);">ZMW 8,000</strong></div><div style="display:flex;justify-content:space-between;"><span style="color:var(--tx-dim);">Timeline</span><strong>2 weeks</strong></div></div>`},
+];
+function renderProjModal(){
+  projStep=1;renderPMContent();
+}
+function renderPMContent(){
+  const s=PJ_STEPS[projStep-1];
+  document.getElementById('projMC').innerHTML=`
+    <div style="display:flex;gap:6px;margin-bottom:18px;">
+      ${PJ_STEPS.map((_,i)=>`<div style="flex:1;height:4px;border-radius:2px;background:${i<projStep?'var(--mu)':i===projStep-1?'var(--mu)':'var(--gb2)'};transition:background .3s;"></div>`).join('')}
+    </div>
+    <div style="font-size:.72rem;color:var(--tx-dim);margin-bottom:6px;">Step ${projStep} of ${PJ_STEPS.length}</div>
+    <h3 style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;margin-bottom:16px;">${s.title}</h3>
+    ${s.html}
+    <div style="display:flex;gap:10px;margin-top:18px;">
+      ${projStep>1?`<button class="btn bg-btn" style="flex:1;" onclick="projStep--;renderPMContent()">← Back</button>`:''}
+      <button class="btn bp" style="flex:2;" onclick="projFwd()">${projStep===PJ_STEPS.length?'Post Project 🎯':'Continue →'}</button>
+    </div>
+  `;
+}
+function projFwd(){
+  if(projStep<PJ_STEPS.length){projStep++;renderPMContent();}
+  else{cm('projM');toast('🎉 Project posted! Proposals will arrive soon.');}
+}
+
+/* ═══ MODAL HELPERS ═══ */
+function om(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
+function cm(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
+document.querySelectorAll('.ov').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)cm(m.id);});});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.ov.open').forEach(m=>cm(m.id));});
+
+/* ═══ TOAST ═══ */
+function toast(msg){
+  const tc=document.getElementById('TC');
+  const el=document.createElement('div');
+  el.className='toast';
+  el.innerHTML=`<span style="font-size:1.1rem;">✨</span><span class="tmsg">${msg}</span>`;
+  tc.appendChild(el);
+  setTimeout(()=>el.remove(),3600);
+}
+</script>
+</body>
+</html>

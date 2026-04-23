@@ -1,0 +1,569 @@
+/* ============================================================
+   OPTIMUS — DROP-IN STYLE ARCHITECTURE
+   Editorial monochrome / thin-rule grid system.
+   Pure CSS. No Tailwind. Uses BEM-ish naming (op-*).
+   ============================================================ */
+
+/* ─── 1. DESIGN TOKENS ─────────────────────────────────────── */
+:root {
+  /* Color — near-white paper + near-black ink + warm grays */
+  --op-bg:            oklch(0.985 0.002 90);
+  --op-fg:            oklch(0.120 0.010 60);
+  --op-card:          oklch(1 0 0);
+  --op-muted:         oklch(0.940 0.005 90);
+  --op-muted-fg:      oklch(0.450 0.020 60);
+  --op-accent:        oklch(0.920 0.010 90);
+  --op-border:        oklch(0.880 0.010 90);
+  --op-destructive:   oklch(0.577 0.245 27.325);
+  --op-live:          oklch(0.72 0.18 145);   /* single accent, live dot only */
+
+  /* Rgba helpers derived from fg — used everywhere for hairlines */
+  --op-fg-03:  rgba(18, 18, 22, 0.03);
+  --op-fg-05:  rgba(18, 18, 22, 0.05);
+  --op-fg-10:  rgba(18, 18, 22, 0.10);
+  --op-fg-20:  rgba(18, 18, 22, 0.20);
+  --op-fg-30:  rgba(18, 18, 22, 0.30);
+  --op-fg-50:  rgba(18, 18, 22, 0.50);
+  --op-fg-70:  rgba(18, 18, 22, 0.70);
+
+  /* Fonts — load via <link> or next/font */
+  --op-font-sans:    'Instrument Sans', system-ui, sans-serif;
+  --op-font-display: 'Instrument Serif', Georgia, serif;
+  --op-font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  /* Type scale (editorial — uses clamp for hero) */
+  --op-text-xs:   0.75rem;     /* 12 */
+  --op-text-sm:   0.875rem;    /* 14 */
+  --op-text-base: 1rem;        /* 16 */
+  --op-text-lg:   1.125rem;    /* 18 */
+  --op-text-xl:   1.25rem;     /* 20 */
+  --op-text-2xl:  1.5rem;      /* 24 */
+  --op-text-3xl:  1.875rem;    /* 30 */
+  --op-text-4xl:  2.25rem;     /* 36 */
+  --op-text-5xl:  3rem;        /* 48 */
+  --op-text-6xl:  3.75rem;     /* 60 */
+  --op-text-7xl:  4.5rem;      /* 72 */
+  --op-text-hero: clamp(3rem, 12vw, 10rem);
+
+  /* Letter-spacing */
+  --op-track-tight:  -0.025em;
+  --op-track-normal: 0;
+  --op-track-wide:   0.12em;
+  --op-track-widest: 0.2em;
+
+  /* Line-height */
+  --op-lh-tight:   0.9;
+  --op-lh-snug:    1.1;
+  --op-lh-normal:  1.5;
+  --op-lh-relaxed: 1.75;
+
+  /* Spacing scale (4-pt) */
+  --op-s-1:  0.25rem;  --op-s-2:  0.5rem;   --op-s-3:  0.75rem;
+  --op-s-4:  1rem;     --op-s-5:  1.25rem;  --op-s-6:  1.5rem;
+  --op-s-8:  2rem;     --op-s-10: 2.5rem;   --op-s-12: 3rem;
+  --op-s-16: 4rem;     --op-s-20: 5rem;     --op-s-24: 6rem;
+  --op-s-32: 8rem;     --op-s-40: 10rem;
+
+  /* Radius — deliberately tiny; CTAs use full */
+  --op-r-sm:   0.125rem;   /* 2px  */
+  --op-r-md:   0.25rem;    /* 4px — base */
+  --op-r-lg:   0.5rem;     /* 8px  */
+  --op-r-xl:   1rem;       /* 16px — pill cards on scrolled nav */
+  --op-r-2xl:  1.5rem;     /* 24px */
+  --op-r-full: 9999px;
+
+  /* Shadow — restrained; used only on elevated nav */
+  --op-shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --op-shadow:    0 4px 12px rgba(0,0,0,0.06);
+  --op-shadow-lg: 0 20px 40px -10px rgba(0,0,0,0.10);
+
+  /* Container + gutters */
+  --op-container-max: 1400px;
+  --op-container-px:  1.5rem;       /* mobile  */
+  --op-container-px-lg: 3rem;       /* ≥1024px */
+
+  /* Section rhythm */
+  --op-section-py:    6rem;         /* 24 */
+  --op-section-py-lg: 8rem;         /* 32 */
+
+  /* Motion */
+  --op-ease-smooth:   cubic-bezier(0.22, 1, 0.36, 1);
+  --op-ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --op-ease-expo:     cubic-bezier(0.77, 0, 0.175, 1);
+  --op-dur-fast:   200ms;
+  --op-dur-base:   300ms;
+  --op-dur-slow:   500ms;
+  --op-dur-slower: 700ms;
+  --op-dur-hero:   1000ms;
+
+  /* Breakpoints (for reference — use in @media) */
+  --op-bp-sm: 640px;
+  --op-bp-md: 768px;
+  --op-bp-lg: 1024px;
+  --op-bp-xl: 1280px;
+}
+
+/* ─── 2. BASE ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--op-bg);
+  color: var(--op-fg);
+  font-family: var(--op-font-sans);
+  font-size: var(--op-text-base);
+  line-height: var(--op-lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection            { background: var(--op-fg); color: var(--op-bg); }
+:focus-visible          { outline: 2px solid var(--op-fg); outline-offset: 2px; border-radius: var(--op-r-sm); }
+input::placeholder,
+textarea::placeholder   { color: var(--op-muted-fg); }
+
+/* Thin-rail scrollbar */
+::-webkit-scrollbar               { width: 10px; height: 10px; }
+::-webkit-scrollbar-track         { background: transparent; }
+::-webkit-scrollbar-thumb         { background: var(--op-fg-10); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover   { background: var(--op-fg-30); }
+
+/* ─── 3. TYPOGRAPHY SYSTEM ─────────────────────────────────── */
+.op-display {
+  font-family: var(--op-font-display);
+  font-weight: 400;
+  letter-spacing: var(--op-track-tight);
+  line-height: var(--op-lh-tight);
+}
+.op-h1 { font-family: var(--op-font-display); font-size: var(--op-text-hero); line-height: var(--op-lh-tight); letter-spacing: var(--op-track-tight); }
+.op-h2 { font-family: var(--op-font-display); font-size: var(--op-text-4xl); line-height: var(--op-lh-tight); letter-spacing: var(--op-track-tight); }
+.op-h3 { font-family: var(--op-font-display); font-size: var(--op-text-3xl); line-height: var(--op-lh-snug); letter-spacing: var(--op-track-tight); }
+.op-h4 { font-family: var(--op-font-display); font-size: var(--op-text-2xl); line-height: var(--op-lh-snug); }
+@media (min-width: 1024px) {
+  .op-h2 { font-size: var(--op-text-6xl); }
+  .op-h3 { font-size: var(--op-text-4xl); }
+  .op-h4 { font-size: var(--op-text-3xl); }
+}
+
+.op-lead          { font-size: var(--op-text-xl); color: var(--op-muted-fg); line-height: var(--op-lh-relaxed); max-width: 36rem; }
+.op-body          { font-size: var(--op-text-base); line-height: var(--op-lh-normal); color: var(--op-fg); }
+.op-muted         { color: var(--op-muted-fg); }
+.op-caption       { font-family: var(--op-font-mono); font-size: var(--op-text-xs); letter-spacing: var(--op-track-widest); text-transform: uppercase; color: var(--op-muted-fg); }
+.op-mono          { font-family: var(--op-font-mono); }
+
+/* Outlined "stroke" headline variant */
+.op-text-stroke {
+  -webkit-text-stroke: 1.5px currentColor;
+  -webkit-text-fill-color: transparent;
+  color: var(--op-fg);
+}
+
+/* Link underline-on-hover */
+.op-link {
+  color: var(--op-fg-70);
+  text-decoration: none;
+  position: relative;
+  transition: color var(--op-dur-base) var(--op-ease-smooth);
+}
+.op-link:hover { color: var(--op-fg); }
+.op-link--underline::after {
+  content: '';
+  position: absolute; left: 0; bottom: -2px;
+  width: 0; height: 1px; background: currentColor;
+  transition: width var(--op-dur-base) var(--op-ease-smooth);
+}
+.op-link--underline:hover::after { width: 100%; }
+
+/* Eyebrow = short rule + mono label (signature pattern) */
+.op-eyebrow {
+  display: inline-flex; align-items: center; gap: var(--op-s-3);
+  font-family: var(--op-font-mono); font-size: var(--op-text-sm);
+  color: var(--op-muted-fg); letter-spacing: var(--op-track-wide);
+}
+.op-eyebrow::before {
+  content: ''; width: 2rem; height: 1px; background: var(--op-fg-30);
+}
+
+/* ─── 4. LAYOUT PRIMITIVES ─────────────────────────────────── */
+.op-container {
+  max-width: var(--op-container-max);
+  margin-inline: auto;
+  padding-inline: var(--op-container-px);
+}
+@media (min-width: 1024px) {
+  .op-container { padding-inline: var(--op-container-px-lg); }
+}
+.op-section       { position: relative; padding-block: var(--op-section-py); }
+.op-section--lg   { padding-block: var(--op-section-py-lg); }
+.op-section--ruled { border-top: 1px solid var(--op-fg-10); }
+.op-section--invert { background: var(--op-fg); color: var(--op-bg); }
+.op-section--invert .op-muted { color: rgba(255,255,255,0.6); }
+
+/* Hairline grid — gaps reveal fg-10 through bg cells */
+.op-grid-rule {
+  display: grid;
+  gap: 1px;
+  background: var(--op-fg-10);
+}
+.op-grid-rule > * { background: var(--op-bg); }
+
+.op-grid-2 { display: grid; grid-template-columns: 1fr; gap: var(--op-s-8); }
+.op-grid-3 { display: grid; grid-template-columns: 1fr; gap: var(--op-s-6); }
+.op-grid-4 { display: grid; grid-template-columns: 1fr; gap: var(--op-s-6); }
+@media (min-width: 768px) {
+  .op-grid-2 { grid-template-columns: repeat(2, 1fr); gap: var(--op-s-12); }
+  .op-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .op-grid-4 { grid-template-columns: repeat(4, 1fr); }
+}
+@media (min-width: 1024px) {
+  .op-grid-2 { gap: var(--op-s-24); }
+}
+
+/* Split hero — text left / visual right */
+.op-split {
+  display: grid; grid-template-columns: 1fr; gap: var(--op-s-12);
+  align-items: end;
+}
+@media (min-width: 1024px) {
+  .op-split { grid-template-columns: 1.1fr 0.9fr; gap: var(--op-s-24); }
+}
+
+/* Sticky right column (code panel pattern) */
+.op-sticky-col {
+  position: relative;
+}
+@media (min-width: 1024px) {
+  .op-sticky-col { position: sticky; top: 8rem; align-self: flex-start; }
+}
+
+/* Faint 8×12 grid overlay for heroes */
+.op-grid-overlay {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.3;
+  background-image:
+    linear-gradient(to right, var(--op-fg-10) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--op-fg-10) 1px, transparent 1px);
+  background-size: calc(100% / 12) calc(100% / 8);
+}
+
+/* SVG grain overlay */
+.op-noise { position: relative; }
+.op-noise::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Diagonal-hatch pattern (used on invert sections) */
+.op-hatch {
+  background-image: repeating-linear-gradient(-45deg,
+    transparent 0, transparent 40px,
+    currentColor 40px, currentColor 41px);
+  opacity: 0.03;
+  position: absolute; inset: 0; pointer-events: none;
+}
+
+/* ─── 5. COMPONENTS ────────────────────────────────────────── */
+
+/* ----- Sticky navigation (morphs on scroll — needs JS to toggle .is-scrolled) */
+.op-nav {
+  position: fixed; z-index: 50;
+  top: 0; left: 0; right: 0;
+  transition: all var(--op-dur-slow) var(--op-ease-smooth);
+}
+.op-nav.is-scrolled { top: 1rem; left: 1rem; right: 1rem; }
+.op-nav__inner {
+  margin-inline: auto; max-width: 1400px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 5rem; padding-inline: 1.5rem;
+  background: transparent;
+  transition: all var(--op-dur-slow) var(--op-ease-smooth);
+}
+.op-nav.is-scrolled .op-nav__inner {
+  max-width: 1200px; height: 3.5rem;
+  background: color-mix(in oklab, var(--op-bg) 80%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--op-fg-10);
+  border-radius: var(--op-r-xl);
+  box-shadow: var(--op-shadow);
+}
+.op-nav__brand { font-family: var(--op-font-display); font-size: 1.5rem; letter-spacing: var(--op-track-tight); }
+.op-nav__links { display: none; gap: 3rem; }
+@media (min-width: 768px) { .op-nav__links { display: flex; } }
+
+/* ----- Buttons */
+.op-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--op-s-2);
+  font-family: var(--op-font-sans);
+  font-size: var(--op-text-sm);
+  font-weight: 500;
+  padding: 0 var(--op-s-6); height: 2.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--op-r-full);
+  cursor: pointer;
+  transition: background var(--op-dur-base) var(--op-ease-smooth),
+              color var(--op-dur-base) var(--op-ease-smooth),
+              border-color var(--op-dur-base) var(--op-ease-smooth);
+}
+.op-btn--primary   { background: var(--op-fg); color: var(--op-bg); }
+.op-btn--primary:hover { background: color-mix(in oklab, var(--op-fg) 90%, transparent); }
+.op-btn--outline   { background: transparent; color: var(--op-fg); border-color: var(--op-fg-20); }
+.op-btn--outline:hover { background: var(--op-fg-05); }
+.op-btn--ghost     { background: transparent; color: var(--op-fg-70); }
+.op-btn--ghost:hover { color: var(--op-fg); }
+.op-btn--lg        { height: 3.5rem; padding: 0 var(--op-s-8); font-size: var(--op-text-base); }
+.op-btn--sm        { height: 2rem; padding: 0 var(--op-s-4); font-size: var(--op-text-xs); }
+.op-btn__icon      { transition: transform var(--op-dur-base) var(--op-ease-smooth); }
+.op-btn:hover .op-btn__icon { transform: translateX(4px); }
+
+/* ----- Card (hairline-bordered) */
+.op-card {
+  background: var(--op-bg);
+  border: 1px solid var(--op-fg-10);
+  padding: var(--op-s-8);
+  transition: border-color var(--op-dur-base) var(--op-ease-smooth),
+              background var(--op-dur-base) var(--op-ease-smooth);
+}
+.op-card:hover { border-color: var(--op-fg-30); background: var(--op-fg-03); }
+.op-card--padded { padding: var(--op-s-12); }
+
+/* Pricing card variant (featured = raised + bolder border) */
+.op-plan {
+  position: relative;
+  padding: var(--op-s-8);
+  background: var(--op-bg);
+}
+.op-plan--featured {
+  border: 2px solid var(--op-fg);
+}
+@media (min-width: 768px) {
+  .op-plan { padding: var(--op-s-12); }
+  .op-plan--featured { margin-block: -1rem; padding-block: var(--op-s-12); }
+}
+.op-plan__badge {
+  position: absolute; top: -0.75rem; left: 2rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--op-fg); color: var(--op-bg);
+  font-family: var(--op-font-mono);
+  font-size: var(--op-text-xs); letter-spacing: var(--op-track-widest);
+  text-transform: uppercase;
+}
+
+/* ----- Badge / pill */
+.op-badge {
+  display: inline-flex; align-items: center; gap: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  background: var(--op-fg); color: var(--op-bg);
+  font-family: var(--op-font-mono);
+  font-size: var(--op-text-xs); letter-spacing: var(--op-track-wide);
+  border-radius: var(--op-r-full);
+}
+
+/* ----- Form */
+.op-input {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--op-fg-20);
+  border-radius: var(--op-r-md);
+  padding: var(--op-s-3) var(--op-s-4);
+  font: inherit; color: var(--op-fg);
+  transition: border-color var(--op-dur-fast) var(--op-ease-smooth);
+}
+.op-input:hover  { border-color: var(--op-fg-30); }
+.op-input:focus  { outline: none; border-color: var(--op-fg); }
+.op-label {
+  display: block; margin-bottom: 0.5rem;
+  font-family: var(--op-font-mono); font-size: var(--op-text-xs);
+  letter-spacing: var(--op-track-wide); text-transform: uppercase;
+  color: var(--op-muted-fg);
+}
+
+/* ----- Toggle (rail + knob) */
+.op-toggle {
+  position: relative;
+  width: 3.5rem; height: 1.75rem;
+  background: var(--op-fg-10);
+  border-radius: var(--op-r-full);
+  padding: 0.25rem; cursor: pointer; border: none;
+  transition: background var(--op-dur-base) var(--op-ease-smooth);
+}
+.op-toggle:hover { background: var(--op-fg-20); }
+.op-toggle__knob {
+  width: 1.25rem; height: 1.25rem;
+  background: var(--op-fg); border-radius: var(--op-r-full);
+  transition: transform var(--op-dur-base) var(--op-ease-smooth);
+}
+.op-toggle[data-on="true"] .op-toggle__knob { transform: translateX(1.75rem); }
+
+/* ----- Code window (deployed across how-it-works & developers) */
+.op-code {
+  border: 1px solid var(--op-fg-10);
+  background: var(--op-bg);
+  font-family: var(--op-font-mono);
+  font-size: var(--op-text-sm);
+}
+.op-section--invert .op-code { border-color: rgba(255,255,255,0.1); }
+.op-code__chrome {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--op-s-4) var(--op-s-6);
+  border-bottom: 1px solid var(--op-fg-10);
+}
+.op-code__dots { display: flex; gap: 0.5rem; }
+.op-code__dots > span {
+  width: 0.75rem; height: 0.75rem; border-radius: var(--op-r-full);
+  background: var(--op-fg-20);
+}
+.op-code__tabs { display: flex; }
+.op-code__tab {
+  padding: var(--op-s-4) var(--op-s-6);
+  font-family: var(--op-font-mono); font-size: var(--op-text-sm);
+  color: var(--op-muted-fg); background: none; border: none; cursor: pointer;
+  position: relative; transition: color var(--op-dur-base);
+}
+.op-code__tab:hover { color: var(--op-fg); }
+.op-code__tab[aria-selected="true"] { color: var(--op-fg); }
+.op-code__tab[aria-selected="true"]::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px;
+  height: 1px; background: var(--op-fg);
+}
+.op-code__body { padding: var(--op-s-8); min-height: 16rem; line-height: var(--op-lh-relaxed); }
+.op-code__status {
+  display: flex; align-items: center; gap: var(--op-s-3);
+  padding: var(--op-s-4) var(--op-s-6);
+  border-top: 1px solid var(--op-fg-10);
+  font-size: var(--op-text-xs); color: var(--op-muted-fg);
+}
+
+/* Live pulse dot (only place green is used) */
+.op-live-dot {
+  width: 0.5rem; height: 0.5rem; border-radius: 999px;
+  background: var(--op-live);
+  animation: op-pulse 2s var(--op-ease-smooth) infinite;
+}
+@keyframes op-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* ----- Metric cell */
+.op-metric__value {
+  font-family: var(--op-font-display);
+  font-size: var(--op-text-6xl);
+  letter-spacing: var(--op-track-tight);
+  line-height: var(--op-lh-tight);
+}
+@media (min-width: 1024px) { .op-metric__value { font-size: 6rem; } }
+.op-metric__label { margin-top: var(--op-s-4); font-size: var(--op-text-lg); color: var(--op-muted-fg); }
+
+/* ----- Testimonial */
+.op-quote {
+  font-family: var(--op-font-display);
+  font-size: var(--op-text-4xl);
+  line-height: 1.1;
+  letter-spacing: var(--op-track-tight);
+}
+@media (min-width: 1024px) { .op-quote { font-size: var(--op-text-6xl); } }
+.op-avatar {
+  width: 4rem; height: 4rem; border-radius: var(--op-r-full);
+  background: var(--op-fg-05);
+  border: 1px solid var(--op-fg-10);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--op-font-display); font-size: var(--op-text-2xl);
+}
+
+/* ----- Marquee row (used for logos / stats / integrations) */
+.op-marquee          { display: flex; gap: 4rem; white-space: nowrap; animation: op-marquee 30s linear infinite; }
+.op-marquee--reverse { display: flex; gap: 4rem; white-space: nowrap; animation: op-marquee-rev 25s linear infinite; }
+@keyframes op-marquee      { from { transform: translateX(0); }    to { transform: translateX(-50%); } }
+@keyframes op-marquee-rev  { from { transform: translateX(-50%); } to { transform: translateX(0);    } }
+
+/* ----- Integration tile */
+.op-tile {
+  flex-shrink: 0;
+  padding: var(--op-s-6) var(--op-s-8);
+  border: 1px solid var(--op-fg-10);
+  transition: border-color var(--op-dur-base), background var(--op-dur-base);
+}
+.op-tile:hover { border-color: var(--op-fg-30); background: var(--op-fg-03); }
+.op-tile__title { font-size: var(--op-text-lg); font-weight: 500; transition: transform var(--op-dur-base) var(--op-ease-smooth); }
+.op-tile:hover .op-tile__title { transform: translateX(4px); }
+
+/* ----- Dot pagination (for testimonial carousel) */
+.op-dots      { display: flex; gap: 0.5rem; }
+.op-dots__dot { height: 0.5rem; width: 0.5rem; background: var(--op-fg-20); border: none; transition: all var(--op-dur-base); cursor: pointer; }
+.op-dots__dot:hover                { background: var(--op-fg-30); }
+.op-dots__dot[aria-current="true"] { width: 2rem; background: var(--op-fg); }
+
+/* ----- Framed CTA block (invert-able w/ corner brackets) */
+.op-frame {
+  position: relative;
+  border: 1px solid var(--op-fg);
+  padding: var(--op-s-16) var(--op-s-8);
+}
+@media (min-width: 1024px) { .op-frame { padding: var(--op-s-24) var(--op-s-16); } }
+.op-frame::before, .op-frame::after {
+  content: ''; position: absolute; width: 8rem; height: 8rem;
+  border: 1px solid var(--op-fg-10);
+}
+.op-frame::before { top: 0; right: 0; border-top: 0; border-right: 0; }
+.op-frame::after  { bottom: 0; left: 0; border-bottom: 0; border-left: 0; }
+
+/* ─── 6. ANIMATIONS & TRANSITIONS ──────────────────────────── */
+
+/* Char-by-char blur-in (hero accent word) */
+.op-char-in {
+  display: inline-block;
+  opacity: 0; filter: blur(40px); transform: translateY(100%);
+  animation: op-char-in 0.5s var(--op-ease-smooth) forwards;
+}
+@keyframes op-char-in {
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+/* Clip-path reveal (for headlines / rules) */
+.op-line-reveal {
+  clip-path: inset(0 100% 0 0);
+  animation: op-line-reveal 0.8s var(--op-ease-expo) forwards;
+}
+@keyframes op-line-reveal { to { clip-path: inset(0 0 0 0); } }
+
+/* Spring lift on hover (cards, stats) */
+.op-hover-lift  { transition: transform var(--op-dur-slow) var(--op-ease-spring); }
+.op-hover-lift:hover { transform: translateY(-4px); }
+
+/* Letter 3D spin (on brand logo) */
+.op-letter-spin { display: inline-block; transition: transform 0.6s var(--op-ease-spring); }
+.op-letter-spin:hover { transform: rotateY(360deg); }
+
+/* Scroll-triggered fade-up — toggled via IntersectionObserver adding .is-visible */
+.op-reveal {
+  opacity: 0; transform: translateY(2rem);
+  transition: opacity var(--op-dur-slower) var(--op-ease-smooth),
+              transform var(--op-dur-slower) var(--op-ease-smooth);
+}
+.op-reveal.is-visible { opacity: 1; transform: translateY(0); }
+/* Stagger children: add inline style="--op-stagger: 100ms" or use nth-child */
+.op-reveal--stagger > * { transition-delay: calc(var(--op-i, 0) * 100ms); }
+
+/* Progress bar fill */
+.op-progress     { height: 1px; background: var(--op-fg-20); overflow: hidden; }
+.op-progress__fill { height: 100%; width: 0%; background: var(--op-fg); animation: op-progress 5s linear forwards; }
+@keyframes op-progress { to { width: 100%; } }
+
+/* ─── 7. RESPONSIVE ────────────────────────────────────────── */
+/* Main breakpoints applied inline above.
+   Summary:
+   - mobile-first base (1-col, 3rem section padding)
+   - ≥768px  md: 2–3 col grids, nav links visible
+   - ≥1024px lg: 4-col grids, section padding 8rem, split hero, sticky cols, larger headings
+*/
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
